@@ -22,6 +22,8 @@ import {
   Wand2,
   Zap,
   Trophy,
+  Image,
+  BookText,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import {
@@ -42,9 +44,13 @@ const navItems = [
   { href: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
   { href: '/playground', icon: ToyBrick, label: 'Playground' },
   { href: '/tutorials', icon: Presentation, label: 'Visual Tutorials' },
-  { href: '/code-summarizer', icon: Wand2, label: 'Code Summarizer' },
-  { href: '/docs', icon: BookOpen, label: 'Documentation' },
 ];
+
+const aiTools = [
+  { href: '/code-summarizer', icon: Wand2, label: 'Code Summarizer' },
+  { href: '/code-story', icon: BookText, label: 'Code Story' },
+  { href: '/code-image', icon: Image, label: 'Code Image' },
+]
 
 export default function AppSidebar() {
   const pathname = usePathname();
@@ -88,6 +94,41 @@ export default function AppSidebar() {
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
+
+        <SidebarMenu>
+            <p className="px-4 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden mb-2 mt-4">AI Tools</p>
+             {aiTools.map((item) => (
+            <SidebarMenuItem key={item.href}>
+              <Link href={item.href}>
+                <SidebarMenuButton
+                  isActive={pathname.startsWith(item.href)}
+                  tooltip={item.label}
+                  className="group-data-[collapsible=icon]:justify-center"
+                >
+                  <item.icon />
+                  <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+
+         <SidebarMenu className='mt-auto'>
+            <SidebarMenuItem>
+              <Link href="/docs">
+                <SidebarMenuButton
+                  isActive={pathname.startsWith('/docs')}
+                  tooltip='Documentation'
+                  className="group-data-[collapsible=icon]:justify-center"
+                >
+                  <BookOpen />
+                  <span className="group-data-[collapsible=icon]:hidden">Documentation</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
+        </SidebarMenu>
+
+
       </SidebarContent>
       <SidebarFooter>
         {user ? (
