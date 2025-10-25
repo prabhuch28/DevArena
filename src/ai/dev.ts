@@ -1,4 +1,5 @@
+'use client';
 import { config } from 'dotenv';
 config();
 
-import '@/ai/flows/ai-mentor-assistance.ts';
+import '@/ai/flows/code-story-flow.ts';

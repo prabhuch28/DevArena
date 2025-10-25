@@ -19,6 +19,7 @@ import {
   Settings,
   LogOut,
   GitBranch,
+  Wand2,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import {
@@ -37,6 +38,7 @@ const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/playground', icon: ToyBrick, label: 'Playground' },
   { href: '/tutorials', icon: Presentation, label: 'Visual Tutorials' },
+  { href: '/code-story', icon: Wand2, label: 'Code Story' },
   { href: '/docs', icon: BookOpen, label: 'Documentation' },
 ];
 
