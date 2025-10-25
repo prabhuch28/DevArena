@@ -1,3 +1,4 @@
+
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Presentation, Clock, BarChart2, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -110,7 +111,7 @@ export default function TutorialsPage() {
                         </CardContent>
                         <CardFooter>
                             <Button asChild className="w-full">
-                                <Link href={`/tutorials/${tutorial.id}`}>Start Tutorial</Link>
+                                <Link href="https://youtu.be/XGa4onZP66Q?si=4GdmabK53fuQMxxa" target="_blank">Start Tutorial</Link>
                             </Button>
                         </CardFooter>
                     </Card>
