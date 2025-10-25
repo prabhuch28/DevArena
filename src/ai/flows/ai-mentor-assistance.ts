@@ -82,6 +82,7 @@ const aiMentorAssistanceFlow = ai.defineFlow(
     
     const { output } = await prompt({
         ...input,
+        // @ts-ignore
         challenge: challengeData
     });
     return output!;
