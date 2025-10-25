@@ -30,7 +30,7 @@ export default function CodeSummarizerPage() {
     (f, rest) = numbers
     return f + listSum(rest)
 
-myList = (1, (2, (3, null)))
+myList = (1, (2, (3, None)))
 total = listSum(myList)`
   );
   const [programmingLanguage, setProgrammingLanguage] = useState('Python');
@@ -65,101 +65,105 @@ total = listSum(myList)`
           </p>
         </div>
       </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Code Input</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <Textarea
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="Paste your code here..."
-            className="min-h-[250px] font-code text-sm bg-secondary border-0"
-          />
-          <div className="flex flex-col sm:flex-row gap-2">
-             <Select
-                value={programmingLanguage}
-                onValueChange={setProgrammingLanguage}
-              >
-                <SelectTrigger className="w-full sm:w-[180px]">
-                  <SelectValue placeholder="Code Language" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="JavaScript">JavaScript</SelectItem>
-                  <SelectItem value="Python">Python</SelectItem>
-                  <SelectItem value="Java">Java</SelectItem>
-                  <SelectItem value="C++">C++</SelectItem>
-                  <SelectItem value="TypeScript">TypeScript</SelectItem>
-                  <SelectItem value="Go">Go</SelectItem>
-                </SelectContent>
-              </Select>
-            <Button
-              onClick={handleGenerate}
-              disabled={isLoading || !code}
-              className="w-full sm:w-auto"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Visualizing...
-                </>
-              ) : (
-                <>
-                  <Play className="mr-2" />
-                  Visualize Execution
-                </>
-              )}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {isLoading && (
-         <div className="flex flex-col items-center gap-4 text-muted-foreground p-8">
-            <Loader2 className="w-12 h-12 animate-spin text-primary" />
-            <p className='font-semibold'>AI is analyzing your code...</p>
-            <p className='text-sm'>Please wait while we generate the execution steps and visualization.</p>
-          </div>
-      )}
-
-      {summary && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card>
+      
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+        <Card>
             <CardHeader>
-              <CardTitle>Execution Summary</CardTitle>
-              <CardDescription>
-                A step-by-step breakdown of what the code is doing.
-              </CardDescription>
+            <CardTitle>Code Input</CardTitle>
             </CardHeader>
-            <CardContent className="prose prose-sm prose-invert max-w-none">
-                <ReactMarkdown
-                    components={{
-                        p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
-                        ol: ({node, ...props}) => <ol className="list-decimal list-inside" {...props} />,
-                        ul: ({node, ...props}) => <ul className="list-disc list-inside" {...props} />,
-                    }}
+            <CardContent className="flex flex-col gap-4">
+            <Textarea
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="Paste your code here..."
+                className="min-h-[250px] font-code text-sm bg-secondary border-0"
+            />
+            <div className="flex flex-col sm:flex-row gap-2">
+                <Select
+                    value={programmingLanguage}
+                    onValueChange={setProgrammingLanguage}
                 >
-                    {summary.summary}
-                </ReactMarkdown>
+                    <SelectTrigger className="w-full sm:w-[180px]">
+                    <SelectValue placeholder="Code Language" />
+                    </SelectTrigger>
+                    <SelectContent>
+                    <SelectItem value="JavaScript">JavaScript</SelectItem>
+                    <SelectItem value="Python">Python</SelectItem>
+                    <SelectItem value="Java">Java</SelectItem>
+                    <SelectItem value="C++">C++</SelectItem>
+                    <SelectItem value="TypeScript">TypeScript</SelectItem>
+                    <SelectItem value="Go">Go</SelectItem>
+                    </SelectContent>
+                </Select>
+                <Button
+                onClick={handleGenerate}
+                disabled={isLoading || !code}
+                className="w-full sm:w-auto"
+                >
+                {isLoading ? (
+                    <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Visualizing...
+                    </>
+                ) : (
+                    <>
+                    <Play className="mr-2" />
+                    Visualize Execution
+                    </>
+                )}
+                </Button>
+            </div>
             </CardContent>
-          </Card>
-           <Card>
-            <CardHeader>
-              <CardTitle>Live Visualization</CardTitle>
-              <CardDescription>
-                Frames and objects in memory at each step. (Conceptual)
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-center text-muted-foreground p-8">
-              <p className="font-semibold">Visualization Coming Soon</p>
-              <p className="text-xs">
-                An interactive visualization of your code's state will appear here.
-              </p>
-            </CardContent>
-          </Card>
+        </Card>
+        <div className='lg:col-span-1 flex flex-col gap-4'>
+            {isLoading && (
+                <Card className="flex-grow flex flex-col items-center justify-center gap-4 text-muted-foreground p-8">
+                    <Loader2 className="w-12 h-12 animate-spin text-primary" />
+                    <p className='font-semibold'>AI is analyzing your code...</p>
+                    <p className='text-sm'>Please wait while we generate the execution steps.</p>
+                </Card>
+            )}
+            {!isLoading && !summary && (
+                 <Card className="flex-grow flex flex-col items-center justify-center gap-4 text-muted-foreground p-8">
+                    <p className='font-semibold'>Output will appear here</p>
+                    <p className='text-sm text-center'>Enter your code and click "Visualize Execution" to see the step-by-step summary.</p>
+                </Card>
+            )}
+            {summary && (
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 flex-grow">
+                <Card className='flex flex-col'>
+                    <CardHeader>
+                    <CardTitle>Execution Summary (Frames)</CardTitle>
+                    </CardHeader>
+                    <CardContent className="prose prose-sm prose-invert max-w-none flex-grow overflow-auto">
+                        <ReactMarkdown
+                            components={{
+                                p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                                ol: ({node, ...props}) => <ol className="list-decimal list-inside" {...props} />,
+                                ul: ({node, ...props}) => <ul className="list-disc list-inside" {...props} />,
+                            }}
+                        >
+                            {summary.summary}
+                        </ReactMarkdown>
+                    </CardContent>
+                </Card>
+                <Card className='flex flex-col'>
+                    <CardHeader>
+                    <CardTitle>Visualization (Objects)</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-center text-muted-foreground flex-grow flex items-center justify-center">
+                    <div>
+                        <p className="font-semibold">Visualization Coming Soon</p>
+                        <p className="text-xs">
+                            An interactive diagram of your code's objects in memory will appear here.
+                        </p>
+                    </div>
+                    </CardContent>
+                </Card>
+                </div>
+            )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
