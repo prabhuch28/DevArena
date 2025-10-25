@@ -9,7 +9,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
-import { challenges }veggie from '@/lib/challenges-data';
+import { challenges } from '@/lib/challenges-data';
 
 const GetAiMentorAssistanceInputSchema = z.object({
   challengeId: z.string().describe('The ID of the challenge the user is asking about.').optional(),
