@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import AppSidebar from '@/components/app-sidebar';
 import AppHeader from '@/components/app-header';
 import { Loader2 } from 'lucide-react';
+import { AiMentorWidget } from '@/components/AiMentorWidget';
 
 export default function AppLayout({
   children,
@@ -43,6 +44,7 @@ export default function AppLayout({
       <SidebarInset>
         <AppHeader />
         <main className="p-4 lg:p-8 bg-secondary/50">{children}</main>
+        <AiMentorWidget />
       </SidebarInset>
     </SidebarProvider>
   );

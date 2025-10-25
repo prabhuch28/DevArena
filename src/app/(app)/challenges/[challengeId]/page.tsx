@@ -11,18 +11,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Play, Code, MessageSquare, Loader2, Send, User, Bot } from 'lucide-react';
+import { Play, Code, Terminal } from 'lucide-react';
 import { challenges } from '@/lib/challenges-data';
 import { notFound } from 'next/navigation';
-import { getAiMentorAssistance } from '@/ai/flows/ai-mentor-assistance';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
-
-interface ChatMessage {
-  sender: 'user' | 'ai';
-  text: string;
-}
 
 export default function ChallengeDetailPage({
   params,
@@ -31,51 +22,30 @@ export default function ChallengeDetailPage({
 }) {
   const challenge = challenges.find((c) => c.id === params.challengeId);
   const [code, setCode] = useState('');
-  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
-  const [chatInput, setChatInput] = useState('');
-  const [isMentorLoading, setIsMentorLoading] = useState(false);
-
+  const [output, setOutput] = useState('Your output will appear here...');
 
   if (!challenge) {
     notFound();
   }
 
-  const handleChatSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!chatInput.trim()) return;
+  const handleRunCode = () => {
+    setOutput('Running code...');
+    // In a real scenario, you'd execute the code in a sandbox
+    // and capture the output. For now, we'll just simulate it.
+    setTimeout(() => {
+        setOutput(`Simulated output for:
+        
+${code}
 
-    const userMessage: ChatMessage = { sender: 'user', text: chatInput };
-    setChatHistory((prev) => [...prev, userMessage]);
-    setChatInput('');
-    setIsMentorLoading(true);
-
-    try {
-      const result = await getAiMentorAssistance({
-        challengeId: challenge.id,
-        query: chatInput,
-        code,
-      });
-      const aiMessage: ChatMessage = { sender: 'ai', text: result.response };
-      setChatHistory((prev) => [...prev, aiMessage]);
-    } catch (error) {
-      console.error('Error getting AI assistance:', error);
-      const errorMessage: ChatMessage = {
-        sender: 'ai',
-        text: 'Sorry, I encountered an error. Please try again.',
-      };
-      setChatHistory((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsMentorLoading(false);
-    }
-  };
-
+> Executed successfully.
+> 2 tests passed, 0 failed.`);
+    }, 1000);
+  }
 
   return (
-    <div className="h-[calc(100vh-100px)] grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div className="h-[calc(100vh-100px)] grid grid-cols-1 lg:grid-cols-2 gap-4">
       {/* Left Column */}
-      <div className="lg:col-span-2 flex flex-col gap-4">
-        {/* Challenge Description */}
-        <Card className="flex flex-col flex-grow">
+        <Card className="flex flex-col">
           <CardHeader>
             <div className="flex justify-between items-start">
               <CardTitle className="font-headline text-2xl">
@@ -100,14 +70,16 @@ export default function ChallengeDetailPage({
           </CardContent>
         </Card>
 
+      {/* Right Column */}
+      <div className="lg:col-span-1 flex flex-col gap-4">
         {/* Code Editor */}
-        <Card className="flex flex-col flex-grow">
+        <Card className="flex flex-col flex-grow-[2]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Code /> Your Solution
             </CardTitle>
             <CardDescription>
-              Write your code, ask the AI Mentor for hints, and submit when you're ready.
+              Write your code and run it to see the output.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex-grow flex flex-col gap-4">
@@ -117,83 +89,30 @@ export default function ChallengeDetailPage({
               onChange={(e) => setCode(e.target.value)}
               className="flex-grow font-code bg-secondary border-0 resize-none"
             />
-            <Button size="lg">
+            <Button size="lg" onClick={handleRunCode}>
               <Play className="mr-2" />
-              Run & Submit
+              Run Code
             </Button>
           </CardContent>
         </Card>
+        
+        {/* Output/Console */}
+        <Card className="flex flex-col flex-grow-[1]">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Terminal /> Output
+            </CardTitle>
+             <CardDescription>
+              Results from your code execution will be displayed here.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex-grow">
+            <pre className="bg-secondary p-4 rounded-md text-sm text-muted-foreground whitespace-pre-wrap h-full font-code">
+                {output}
+            </pre>
+          </CardContent>
+        </Card>
       </div>
-
-
-      {/* Right Column - AI Mentor */}
-      <Card className="flex flex-col h-full">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Bot /> AI Mentor
-          </CardTitle>
-          <CardDescription>
-            Stuck? Ask for a hint or explanation.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex-grow flex flex-col gap-4 min-h-0">
-          <ScrollArea className="flex-grow pr-4 -mr-4 h-0">
-            <div className="space-y-4">
-              {chatHistory.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`flex items-start gap-3 ${
-                    msg.sender === 'user' ? 'justify-end' : ''
-                  }`}
-                >
-                  {msg.sender === 'ai' && (
-                    <Avatar className="w-8 h-8 border">
-                      <AvatarFallback><Bot size={18}/></AvatarFallback>
-                    </Avatar>
-                  )}
-                  <div
-                    className={`rounded-lg p-3 max-w-[85%] text-sm ${
-                      msg.sender === 'user'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-secondary'
-                    }`}
-                  >
-                    {msg.text}
-                  </div>
-                   {msg.sender === 'user' && (
-                    <Avatar className="w-8 h-8 border">
-                       <AvatarFallback><User size={18}/></AvatarFallback>
-                    </Avatar>
-                  )}
-                </div>
-              ))}
-               {isMentorLoading && (
-                <div className="flex items-start gap-3">
-                   <Avatar className="w-8 h-8 border">
-                      <AvatarFallback><Bot size={18}/></AvatarFallback>
-                    </Avatar>
-                    <div className="bg-secondary rounded-lg p-3 flex items-center gap-2">
-                        <Loader2 className="w-4 h-4 animate-spin"/>
-                        <span className="text-xs text-muted-foreground">Thinking...</span>
-                    </div>
-                </div>
-            )}
-            </div>
-          </ScrollArea>
-          <form onSubmit={handleChatSubmit} className="flex items-center gap-2">
-            <Input
-              value={chatInput}
-              onChange={(e) => setChatInput(e.target.value)}
-              placeholder="Ask for a hint..."
-              className="flex-grow bg-secondary border-0"
-              disabled={isMentorLoading}
-            />
-            <Button type="submit" size="icon" disabled={isMentorLoading || !chatInput.trim()}>
-              <Send />
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
     </div>
   );
 }
