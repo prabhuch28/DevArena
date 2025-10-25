@@ -43,10 +43,10 @@ export function XPProgressChart({ data }: XPProgressChartProps) {
                     content={<ChartTooltipContent 
                         indicator="line"
                         hideLabel
-                        formatter={(value, name) => (
+                        formatter={(value, name, props) => (
                             <div className="flex flex-col">
-                                <span className="font-bold">{value} XP</span>
-                                <span className="text-xs text-muted-foreground">on {data.find(d => d.xp === value)?.date}</span>
+                                <span className="font-bold">{props.payload?.xp} XP</span>
+                                <span className="text-xs text-muted-foreground">on {props.payload?.date}</span>
                             </div>
                         )}
                     />}

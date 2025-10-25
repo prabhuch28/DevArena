@@ -7,7 +7,6 @@ import {
   CardDescription,
 } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Button } from '@/components/ui/button';
 import {
   ListChecks,
   ToyBrick,
@@ -26,7 +25,7 @@ import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { recentActivities } from '@/lib/activity-data';
-import { XPProgressChart } from '@/components/ui/xp-progress-chart';
+import { XPProgressChart } from '@/components/xp-progress-chart';
 import { xpData } from '@/lib/chart-data';
 
 const initialTodoItems = [
@@ -74,7 +73,6 @@ export default function DashboardPage() {
             toast({
               title: 'Task Completed!',
               description: `Great job on finishing: "${updatedItem.title}"`,
-              action: <CheckCircle2 className="text-green-500" />,
             });
           }
           return updatedItem;
