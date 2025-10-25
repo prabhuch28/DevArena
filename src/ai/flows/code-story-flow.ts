@@ -12,6 +12,7 @@ import { z } from 'genkit';
 
 const GenerateCodeStoryInputSchema = z.object({
   code: z.string().describe('The code snippet to generate a story from.'),
+  programmingLanguage: z.string().describe('The programming language of the code snippet (e.g., JavaScript, Python).'),
   language: z.string().describe('The language to generate the story in (e.g., English, Gujarati, Telugu).'),
 });
 export type GenerateCodeStoryInput = z.infer<typeof GenerateCodeStoryInputSchema>;
@@ -30,7 +31,7 @@ const prompt = ai.definePrompt({
   input: { schema: GenerateCodeStoryInputSchema },
   output: { schema: GenerateCodeStoryOutputSchema },
   prompt: `You are a master storyteller who can explain complex code in a simple, engaging narrative.
-Your task is to take the following code snippet and explain it as a story in {{language}}.
+Your task is to take the following {{programmingLanguage}} code snippet and explain it as a story in {{language}}.
 The story should be easy to understand for someone who is not a programmer.
 
 Code:

@@ -26,6 +26,7 @@ import {
 
 export default function CodeStoryPage() {
   const [code, setCode] = useState('');
+  const [programmingLanguage, setProgrammingLanguage] = useState('JavaScript');
   const [language, setLanguage] = useState('English');
   const [story, setStory] = useState<GenerateCodeStoryOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +36,7 @@ export default function CodeStoryPage() {
     setIsLoading(true);
     setStory(null);
     try {
-      const result = await generateCodeStory({ code, language });
+      const result = await generateCodeStory({ code, programmingLanguage, language });
       setStory(result);
     } catch (error) {
       console.error('Error generating story:', error);
@@ -74,10 +75,23 @@ export default function CodeStoryPage() {
               placeholder="function helloWorld() { console.log('Hello, World!'); }"
               className="min-h-[300px] font-code text-sm bg-secondary border-0"
             />
-            <div className="flex items-center gap-4">
-              <Select value={language} onValueChange={setLanguage}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select language" />
+            <div className="flex flex-wrap items-center gap-4">
+              <Select value={programmingLanguage} onValueChange={setProgrammingLanguage}>
+                <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectValue placeholder="Code Language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="JavaScript">JavaScript</SelectItem>
+                  <SelectItem value="Python">Python</SelectItem>
+                  <SelectItem value="Java">Java</SelectItem>
+                  <SelectItem value="C++">C++</SelectItem>
+                  <SelectItem value="TypeScript">TypeScript</SelectItem>
+                  <SelectItem value="Go">Go</SelectItem>
+                </SelectContent>
+              </Select>
+               <Select value={language} onValueChange={setLanguage}>
+                <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectValue placeholder="Story Language" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="English">English</SelectItem>
@@ -88,7 +102,7 @@ export default function CodeStoryPage() {
               <Button
                 onClick={handleGenerateStory}
                 disabled={isLoading || !code}
-                className="w-full"
+                className="w-full sm:flex-1"
               >
                 {isLoading ? (
                   <>
@@ -137,4 +151,3 @@ export default function CodeStoryPage() {
     </div>
   );
 }
-
