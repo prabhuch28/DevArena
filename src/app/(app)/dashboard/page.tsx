@@ -1,16 +1,5 @@
 'use client';
 import {
-  Bar,
-  BarChart,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  Pie,
-  PieChart,
-  Cell,
-} from 'recharts';
-
-import {
   Card,
   CardContent,
   CardHeader,
@@ -18,201 +7,118 @@ import {
   CardDescription,
 } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import {
-  userStats,
-  problemsByCategory,
-  dailyMissions,
-  submissionAccuracy,
-} from '@/lib/data';
-import { Badge } from '@/components/ui/badge';
-import {
-  Trophy,
-  Coins,
-  Star,
-  Flame,
-  Target,
-  CheckCircle,
-} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ListChecks, ToyBrick, Presentation, BookOpen } from 'lucide-react';
+import Link from 'next/link';
+import { useUser } from '@/firebase';
 
-const chartConfig = {
-  solved: {
-    label: 'Solved',
-  },
-  arrays: {
-    label: 'Arrays',
-    color: 'hsl(var(--chart-1))',
-  },
-  strings: {
-    label: 'Strings',
-    color: 'hsl(var(--chart-2))',
-  },
-  trees: {
-    label: 'Trees',
-    color: 'hsl(var(--chart-3))',
-  },
-  graphs: {
-    label: 'Graphs',
-    color: 'hsl(var(--chart-4))',
-  },
-  dp: {
-    label: 'DP',
-    color: 'hsl(var(--chart-5))',
-  },
-  misc: {
-    label: 'Misc',
-    color: 'hsl(var(--muted))',
-  },
-};
 
-const accuracyChartConfig = {
-    value: {
-        label: "Submissions"
-    },
-    accepted: {
-        label: "Accepted",
-        color: "hsl(var(--chart-1))"
-    },
-    rejected: {
-        label: "Rejected",
-        color: "hsl(var(--chart-2))"
-    }
-}
+const todoItems = [
+    { id: 1, title: 'Explore the Interactive Playground', completed: false, href: '/playground' },
+    { id: 2, title: 'Watch the "API Endpoints" tutorial', completed: false, href: '/tutorials/api-endpoints' },
+    { id: 3, title: 'Read the documentation on JWT Authentication', completed: false, href: '/docs/jwt' },
+    { id: 4, title: 'Build a simple login flow visually', completed: false, href: '/playground' },
+];
 
 export default function DashboardPage() {
+  const { user } = useUser();
+
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="font-headline text-3xl font-bold tracking-tight">
-        Welcome Back, Coder!
-      </h1>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-        <StatCard
-          title="XP Points"
-          value={userStats.xp.toLocaleString()}
-          icon={<Star className="h-6 w-6 text-yellow-400" />}
+    <div className="flex flex-col gap-8">
+      <div>
+        <h1 className="font-headline text-3xl font-bold tracking-tight">
+          Welcome, {user?.displayName || 'Developer'}!
+        </h1>
+        <p className="text-muted-foreground">Let's demystify the backend, one block at a time.</p>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <FeatureCard
+            title="Interactive Playground"
+            description="Visually construct and understand backend logic with a drag-and-drop canvas."
+            icon={<ToyBrick className="w-10 h-10 text-primary" />}
+            href="/playground"
+            cta="Open Playground"
         />
-        <StatCard
-          title="Coins"
-          value={userStats.coins.toLocaleString()}
-          icon={<Coins className="h-6 w-6 text-amber-500" />}
+        <FeatureCard
+            title="Visual Tutorials"
+            description="Learn complex topics through step-by-step animated tutorials."
+            icon={<Presentation className="w-10 h-10 text-primary" />}
+            href="/tutorials"
+            cta="Browse Tutorials"
         />
-        <StatCard
-          title="Global Rank"
-          value={`#${userStats.rank}`}
-          icon={<Trophy className="h-6 w-6 text-slate-400" />}
-        />
-        <StatCard
-          title="Daily Streak"
-          value={`${userStats.dailyStreak} Days`}
-          icon={<Flame className="h-6 w-6 text-orange-500" />}
-        />
-        <StatCard
-          title="Accuracy"
-          value={`${userStats.accuracy}%`}
-          icon={<CheckCircle className="h-6 w-6 text-green-500" />}
+        <FeatureCard
+            title="Documentation"
+            description="Dive deep into concepts with our comprehensive, easy-to-read docs."
+            icon={<BookOpen className="w-10 h-10 text-primary" />}
+            href="/docs"
+            cta="Read Docs"
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="font-headline">
-              Problems Solved by Category
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={problemsByCategory}>
-                <XAxis
-                  dataKey="category"
-                  stroke="#888888"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-headline flex items-center gap-2">
+            <ListChecks />
+            Your Learning Path
+          </CardTitle>
+          <CardDescription>
+            Here are some suggested next steps to get you started.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ul className="space-y-4">
+            {todoItems.map((item) => (
+              <li key={item.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/80 transition-colors">
+                <Checkbox
+                  id={`todo-${item.id}`}
+                  checked={item.completed}
+                  aria-label={item.title}
                 />
-                <YAxis
-                  stroke="#888888"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(value) => `${value}`}
-                />
-                <Bar dataKey="solved" radius={[4, 4, 0, 0]}>
-                  {problemsByCategory.map((entry) => (
-                    <Cell key={`cell-${entry.category}`} fill={entry.fill} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-        <div className="flex flex-col gap-6">
-            <Card>
-                <CardHeader>
-                <CardTitle className="font-headline">Submission Accuracy</CardTitle>
-                <CardDescription>Total submissions analysis</CardDescription>
-                </CardHeader>
-                <CardContent className="flex items-center justify-center">
-                    <ResponsiveContainer width="100%" height={150}>
-                        <PieChart>
-                        <Pie data={submissionAccuracy} dataKey="value" nameKey="status" cx="50%" cy="50%" innerRadius={40} outerRadius={60} labelLine={false} paddingAngle={5}>
-                             {submissionAccuracy.map((entry) => (
-                                <Cell key={`cell-${entry.status}`} fill={entry.fill} />
-                            ))}
-                        </Pie>
-                        </PieChart>
-                    </ResponsiveContainer>
-                </CardContent>
-            </Card>
-            <Card>
-                <CardHeader>
-                <CardTitle className="font-headline">
-                    <Target className="inline-block mr-2 h-5 w-5" />
-                    Daily Missions
-                </CardTitle>
-                </CardHeader>
-                <CardContent>
-                <ul className="space-y-3">
-                    {dailyMissions.map((mission) => (
-                    <li key={mission.id} className="flex items-center gap-3">
-                        <Checkbox
-                        id={`mission-${mission.id}`}
-                        checked={mission.completed}
-                        aria-label={mission.title}
-                        />
-                        <label
-                        htmlFor={`mission-${mission.id}`}
-                        className={`text-sm ${mission.completed ? 'text-muted-foreground line-through' : ''}`}
-                        >
-                        {mission.title}
-                        </label>
-                    </li>
-                    ))}
-                </ul>
-                </CardContent>
-            </Card>
-        </div>
-      </div>
+                <label
+                  htmlFor={`todo-${item.id}`}
+                  className={`flex-grow text-sm ${item.completed ? 'text-muted-foreground line-through' : ''}`}
+                >
+                  {item.title}
+                </label>
+                <Button variant="ghost" size="sm" asChild>
+                    <Link href={item.href}>Go</Link>
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
     </div>
   );
 }
 
-function StatCard({
+function FeatureCard({
   title,
-  value,
+  description,
   icon,
+  href,
+  cta
 }: {
   title: string;
-  value: string;
+  description: string;
   icon: React.ReactNode;
+  href: string;
+  cta: string;
 }) {
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+    <Card className="flex flex-col">
+      <CardHeader className="flex flex-col items-start gap-4">
         {icon}
+        <CardTitle className="font-headline text-xl">{title}</CardTitle>
       </CardHeader>
+      <CardContent className="flex-grow">
+        <p className="text-muted-foreground text-sm">{description}</p>
+      </CardContent>
       <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
+         <Button asChild className="w-full">
+            <Link href={href}>{cta}</Link>
+        </Button>
       </CardContent>
     </Card>
   );

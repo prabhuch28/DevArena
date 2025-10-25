@@ -13,13 +13,12 @@ import {
 } from '@/components/ui/sidebar';
 import {
   LayoutDashboard,
-  Code,
-  Trophy,
-  Swords,
-  Users,
+  ToyBrick,
+  Presentation,
+  BookOpen,
   Settings,
   LogOut,
-  Atom,
+  GitBranch,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import {
@@ -36,10 +35,9 @@ import { signOut } from 'firebase/auth';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/challenges', icon: Code, label: 'Challenges' },
-  { href: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
-  { href: '/duels', icon: Swords, label: 'Duels' },
-  { href: '/community', icon: Users, label: 'Community' },
+  { href: '/playground', icon: ToyBrick, label: 'Playground' },
+  { href: '/tutorials', icon: Presentation, label: 'Visual Tutorials' },
+  { href: '/docs', icon: BookOpen, label: 'Documentation' },
 ];
 
 export default function AppSidebar() {
@@ -61,9 +59,9 @@ export default function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <Link href="/dashboard" className="flex items-center gap-2">
-          <Atom className="w-8 h-8 text-primary" />
+          <GitBranch className="w-8 h-8 text-primary" />
           <h1 className="font-headline text-2xl font-bold text-sidebar-foreground group-data-[collapsible=icon]:hidden">
-            AlgoVerse
+            BackEndVis
           </h1>
         </Link>
       </SidebarHeader>
@@ -98,7 +96,7 @@ export default function AppSidebar() {
                   <AvatarFallback>{user.email?.charAt(0).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <div className="truncate group-data-[collapsible=icon]:hidden">
-                  <p className="font-medium truncate">{user.displayName || 'Coder'}</p>
+                  <p className="font-medium truncate">{user.displayName || 'Developer'}</p>
                   <p className="text-xs text-muted-foreground truncate">
                     {user.email}
                   </p>

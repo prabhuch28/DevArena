@@ -5,8 +5,8 @@ import { Toaster } from '@/components/ui/toaster';
 import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
-  title: 'AlgoVerse',
-  description: 'Where coders battle, learn, and level up.',
+  title: 'BackEndVis',
+  description: 'Demystifying backend engineering with clear visualizations.',
 };
 
 export default function RootLayout({

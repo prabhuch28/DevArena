@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/firebase';
 import { initiateEmailSignUp } from '@/firebase/non-blocking-login';
-import { Atom } from 'lucide-react';
+import { GitBranch } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
@@ -53,11 +53,11 @@ export default function SignupPage() {
       <Card className="w-full max-w-sm border-0 bg-background shadow-2xl shadow-black/50">
         <CardHeader className="text-center">
           <div className="flex justify-center items-center mb-4">
-            <Atom className="w-12 h-12 text-primary" />
+            <GitBranch className="w-12 h-12 text-primary" />
           </div>
           <CardTitle className="font-headline text-3xl">Create an Account</CardTitle>
           <CardDescription>
-            Join AlgoVerse and start your coding adventure.
+            Join BackEndVis and start your visualization journey.
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
