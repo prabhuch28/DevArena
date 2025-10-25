@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 import {
   Card,
   CardContent,
@@ -60,7 +61,7 @@ total = listSum(myList)`
             Code Summarizer & Visualizer
           </h1>
           <p className="text-muted-foreground">
-            Get a step-by-step summary and visualization of your code's execution.
+            Get a step-by-step summary and visualization of your code's execution, similar to Python Tutor.
           </p>
         </div>
       </div>
@@ -131,8 +132,16 @@ total = listSum(myList)`
                 A step-by-step breakdown of what the code is doing.
               </CardDescription>
             </CardHeader>
-            <CardContent className="prose prose-invert max-w-none text-sm space-y-2">
-              <ReactMarkdown>{summary.summary}</ReactMarkdown>
+            <CardContent className="prose prose-sm prose-invert max-w-none">
+                <ReactMarkdown
+                    components={{
+                        p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                        ol: ({node, ...props}) => <ol className="list-decimal list-inside" {...props} />,
+                        ul: ({node, ...props}) => <ul className="list-disc list-inside" {...props} />,
+                    }}
+                >
+                    {summary.summary}
+                </ReactMarkdown>
             </CardContent>
           </Card>
            <Card>

@@ -29,16 +29,26 @@ const prompt = ai.definePrompt({
   name: 'summarizeCodePrompt',
   input: { schema: SummarizeCodeInputSchema },
   output: { schema: SummarizeCodeOutputSchema },
-  prompt: `You are an expert at explaining code execution like the Python Tutor tool.
-Your task is to take the following {{programmingLanguage}} code snippet and explain its execution step-by-step in a clear, concise narrative.
-Format the entire output in Markdown. Use lists, bold text, and code formatting to make it readable.
+  prompt: `You are an expert at explaining code execution, like the Python Tutor tool (pythontutor.com). Your task is to provide a step-by-step, line-by-line narrative of what a piece of code is doing.
+
+For the given {{programmingLanguage}} code, generate a detailed execution summary.
 
 Code:
 \'\'\'
 {{{code}}}
 \'\'\'
 
-Generate a step-by-step summary explaining what the code does, how variables change, and how functions are called and return.`,
+Follow these instructions for your summary:
+1.  Start from the first line of execution.
+2.  For each step, describe what the line does in simple terms.
+3.  Explain how variables are created, what their values are, and how they change.
+4.  When a function is called, describe the creation of a new "frame" for that function call. Mention the values of the parameters passed into it.
+5.  When a function returns, state the return value and that its frame is discarded.
+6.  If there's recursion, clearly explain the stack of function calls.
+7.  Keep the explanation clear and easy for a beginner to follow.
+8.  **Format the entire output in Markdown.** Use a numbered list for the steps. Use bold text for variable names and function names, and use inline code blocks for values (e.g., \`1\`, \`"hello"\`, \`null\`).
+
+Generate the step-by-step summary.`,
 });
 
 const summarizeCodeFlow = ai.defineFlow(
