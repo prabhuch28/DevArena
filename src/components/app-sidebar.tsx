@@ -20,6 +20,7 @@ import {
   LogOut,
   GitBranch,
   Wand2,
+  Zap,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import {
@@ -36,6 +37,7 @@ import { signOut } from 'firebase/auth';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/challenges', icon: Zap, label: 'Challenges' },
   { href: '/playground', icon: ToyBrick, label: 'Playground' },
   { href: '/tutorials', icon: Presentation, label: 'Visual Tutorials' },
   { href: '/code-story', icon: Wand2, label: 'Code Story' },
