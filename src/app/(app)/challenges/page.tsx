@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -11,10 +12,19 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import { Book, Zap, BarChart3, ArrowRight } from 'lucide-react';
+import { Book, Zap, ArrowRight } from 'lucide-react';
 import { challenges } from '@/lib/challenges-data';
+import { Progress } from '@/components/ui/progress';
 
 export default function ChallengesPage() {
+  const challengesByCategory = challenges.reduce((acc, challenge) => {
+    if (!acc[challenge.category]) {
+      acc[challenge.category] = [];
+    }
+    acc[challenge.category].push(challenge);
+    return acc;
+  }, {} as Record<string, typeof challenges>);
+
   return (
     <div className="container mx-auto py-8">
       <div className="flex items-center gap-4 mb-8">
@@ -29,48 +39,74 @@ export default function ChallengesPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {challenges.map((challenge) => (
-          <Card
-            key={challenge.id}
-            className="flex flex-col hover:border-primary transition-colors"
-          >
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <CardTitle className="font-headline text-xl">
-                  {challenge.title}
-                </CardTitle>
-                <Badge
-                  variant={
-                    challenge.difficulty === 'Easy'
-                      ? 'secondary'
-                      : challenge.difficulty === 'Medium'
-                      ? 'default'
-                      : 'destructive'
-                  }
-                >
-                  {challenge.difficulty}
-                </Badge>
-              </div>
-              <CardDescription className="line-clamp-2">
-                {challenge.description}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex-grow space-y-2 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                    <Book className="w-4 h-4" />
-                    <span>Category: {challenge.category}</span>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {Object.entries(challengesByCategory).map(([category, items]) => {
+          // Fake progress for now
+          const completedCount = items.filter((_, i) => i % 3 === 0).length;
+          const totalCount = items.length;
+          const progress = (completedCount / totalCount) * 100;
+          return (
+            <Card key={category} className="h-full">
+              <CardHeader>
+                <CardTitle className="font-headline">{category}</CardTitle>
+                <CardDescription>{totalCount} challenges</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+                    <span>{completedCount} / {totalCount} completed</span>
                 </div>
-            </CardContent>
-            <CardFooter>
-              <Button asChild className="w-full">
-                <Link href={`/challenges/${challenge.id}`}>
-                  Start Challenge <ArrowRight className="ml-2" />
-                </Link>
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+                <Progress value={progress} />
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      <div>
+        <h2 className="font-headline text-2xl font-bold mb-6">All Challenges</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {challenges.map((challenge) => (
+            <Card
+              key={challenge.id}
+              className="flex flex-col hover:border-primary transition-colors"
+            >
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <CardTitle className="font-headline text-xl">
+                    {challenge.title}
+                  </CardTitle>
+                  <Badge
+                    variant={
+                      challenge.difficulty === 'Easy'
+                        ? 'secondary'
+                        : challenge.difficulty === 'Medium'
+                        ? 'default'
+                        : 'destructive'
+                    }
+                  >
+                    {challenge.difficulty}
+                  </Badge>
+                </div>
+                <CardDescription className="line-clamp-2">
+                  {challenge.description}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex-grow space-y-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Book className="w-4 h-4" />
+                  <span>Category: {challenge.category}</span>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button asChild className="w-full">
+                  <Link href={`/challenges/${challenge.id}`}>
+                    Start Challenge <ArrowRight className="ml-2" />
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );
