@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   // Assume getAuth and app are initialized elsewhere
 } from 'firebase/auth';
+import { toast } from '@/hooks/use-toast';
 
 /** Initiate anonymous sign-in (non-blocking). */
 export function initiateAnonymousSignIn(authInstance: Auth): void {
@@ -28,10 +29,18 @@ export function initiateEmailSignIn(authInstance: Auth, email: string, password:
     .catch(error => {
       // Handle specific auth errors to avoid app crashes and provide better feedback
       if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-        console.error("Login failed: Invalid email or password provided.");
-        // Optionally, you could use a toast notification here to inform the user
+        toast({
+            variant: "destructive",
+            title: "Login Failed",
+            description: "The email or password you entered is incorrect. Please try again.",
+        });
       } else {
         console.error("An unexpected error occurred during sign-in:", error);
+        toast({
+            variant: "destructive",
+            title: "Uh oh! Something went wrong.",
+            description: "An unexpected error occurred during sign-in. Please try again later.",
+        });
       }
     });
   // Code continues immediately. Auth state change is handled by onAuthStateChanged listener.
