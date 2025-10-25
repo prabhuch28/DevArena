@@ -46,13 +46,13 @@ const generateCodeImageFlow = ai.defineFlow(
   async ({ code, programmingLanguage }) => {
     const { media } = await ai.generate({
       model: 'googleai/imagen-4.0-fast-generate-001',
-      prompt: `Generate a clear, visually appealing diagram (like a flowchart or architecture diagram) that explains the logic of the following ${programmingLanguage} code snippet. The diagram should be easy to understand for a beginner. The diagram should be self-contained and not require any additional text to understand.
+      prompt: { text: `Generate a clear, visually appealing diagram (like a flowchart or architecture diagram) that explains the logic of the following ${programmingLanguage} code snippet. The diagram should be easy to understand for a beginner. The diagram should be self-contained and not require any additional text to understand.
 
 Code:
 \'\'\'
 ${code}
 \'\'\'
-`,
+`},
     });
 
     if (!media.url) {
