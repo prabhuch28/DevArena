@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -11,9 +11,14 @@ import {
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Play, Code, Terminal } from 'lucide-react';
+import { Play, Code, Swords, Clock, User, Bot } from 'lucide-react';
 import { challenges } from '@/lib/challenges-data';
 import { notFound } from 'next/navigation';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useUser } from '@/firebase';
+import Image from 'next/image';
+
+const DUEL_DURATION_SECONDS = 300; // 5 minutes
 
 export default function ChallengeDetailPage({
   params,
@@ -21,66 +26,104 @@ export default function ChallengeDetailPage({
   params: { challengeId: string };
 }) {
   const challenge = challenges.find((c) => c.id === params.challengeId);
+  const { user } = useUser();
+
   const [code, setCode] = useState('');
-  const [output, setOutput] = useState('Your output will appear here...');
+  const [opponentCode, setOpponentCode] = useState(`// Opponent is typing...`);
+  const [timeLeft, setTimeLeft] = useState(DUEL_DURATION_SECONDS);
+
+  useEffect(() => {
+    if (timeLeft > 0) {
+      const timer = setTimeout(() => {
+        setTimeLeft(timeLeft - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [timeLeft]);
+
+  useEffect(() => {
+    // Simulate opponent typing
+    const typingInterval = setInterval(() => {
+        setOpponentCode(prev => prev + '\n' + `const solution = () => {};`);
+    }, 5000);
+    return () => clearInterval(typingInterval);
+  }, [])
 
   if (!challenge) {
     notFound();
   }
 
-  const handleRunCode = () => {
-    setOutput('Running code...');
-    // In a real scenario, you'd execute the code in a sandbox
-    // and capture the output. For now, we'll just simulate it.
-    setTimeout(() => {
-        setOutput(`Simulated output for:
-        
-${code}
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
 
-> Executed successfully.
-> 2 tests passed, 0 failed.`);
-    }, 1000);
-  }
+  const handleRunCode = () => {
+    // Submit code logic will go here
+  };
 
   return (
-    <div className="h-[calc(100vh-100px)] grid grid-cols-1 lg:grid-cols-2 gap-4">
-      {/* Left Column */}
-        <Card className="flex flex-col">
-          <CardHeader>
-            <div className="flex justify-between items-start">
-              <CardTitle className="font-headline text-2xl">
-                {challenge.title}
-              </CardTitle>
-              <Badge
-                variant={
-                  challenge.difficulty === 'Easy'
-                    ? 'secondary'
-                    : challenge.difficulty === 'Medium'
-                    ? 'default'
-                    : 'destructive'
-                }
-              >
-                {challenge.difficulty}
-              </Badge>
+    <div className="flex flex-col gap-4 h-[calc(100vh-100px)]">
+      {/* Header Section */}
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-start">
+            <div className="flex items-center gap-4">
+              <Swords className="text-primary w-8 h-8" />
+              <div>
+                <CardTitle className="font-headline text-2xl">
+                  {challenge.title}
+                </CardTitle>
+                <div className="flex items-center gap-4 mt-1">
+                  <Badge
+                    variant={
+                      challenge.difficulty === 'Easy'
+                        ? 'secondary'
+                        : challenge.difficulty === 'Medium'
+                        ? 'default'
+                        : 'destructive'
+                    }
+                  >
+                    {challenge.difficulty}
+                  </Badge>
+                  <CardDescription>Category: {challenge.category}</CardDescription>
+                </div>
+              </div>
             </div>
-            <CardDescription>Category: {challenge.category}</CardDescription>
+            <div className="text-center">
+              <div className="flex items-center gap-2 font-bold text-lg">
+                <Clock className="w-5 h-5"/>
+                <span>Time Left</span>
+              </div>
+              <p className="text-2xl font-mono font-bold text-destructive">{formatTime(timeLeft)}</p>
+            </div>
+          </div>
+        </CardHeader>
+      </Card>
+      
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-grow min-h-0">
+        {/* Left Column: Challenge Description */}
+        <Card className="lg:col-span-3 flex flex-col">
+          <CardHeader>
+            <CardTitle>Problem Description</CardTitle>
           </CardHeader>
           <CardContent className="flex-grow prose prose-invert max-w-none text-sm">
             <p>{challenge.description}</p>
           </CardContent>
         </Card>
 
-      {/* Right Column */}
-      <div className="lg:col-span-1 flex flex-col gap-4">
-        {/* Code Editor */}
-        <Card className="flex flex-col flex-grow-[2]">
+        {/* Middle Column: Your Editor */}
+        <Card className="lg:col-span-5 flex flex-col">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Code /> Your Solution
-            </CardTitle>
-            <CardDescription>
-              Write your code and run it to see the output.
-            </CardDescription>
+             <div className="flex items-center gap-3">
+                <Avatar>
+                  <AvatarImage src={user?.photoURL || `https://picsum.photos/seed/${user?.uid}/40/40`} data-ai-hint="person" />
+                  <AvatarFallback>{user?.email?.charAt(0).toUpperCase()}</AvatarFallback>
+                </Avatar>
+                <CardTitle>Your Solution</CardTitle>
+             </div>
           </CardHeader>
           <CardContent className="flex-grow flex flex-col gap-4">
             <Textarea
@@ -89,27 +132,29 @@ ${code}
               onChange={(e) => setCode(e.target.value)}
               className="flex-grow font-code bg-secondary border-0 resize-none"
             />
-            <Button size="lg" onClick={handleRunCode}>
+             <Button size="lg" onClick={handleRunCode}>
               <Play className="mr-2" />
-              Run Code
+              Submit & Run
             </Button>
           </CardContent>
         </Card>
         
-        {/* Output/Console */}
-        <Card className="flex flex-col flex-grow-[1]">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Terminal /> Output
-            </CardTitle>
-             <CardDescription>
-              Results from your code execution will be displayed here.
-            </CardDescription>
+        {/* Right Column: Opponent's Editor */}
+        <Card className="lg:col-span-4 flex flex-col bg-secondary/50">
+           <CardHeader>
+             <div className="flex items-center gap-3">
+                <Avatar>
+                  <AvatarFallback><Bot/></AvatarFallback>
+                </Avatar>
+                <CardTitle>Opponent's Code</CardTitle>
+             </div>
           </CardHeader>
           <CardContent className="flex-grow">
-            <pre className="bg-secondary p-4 rounded-md text-sm text-muted-foreground whitespace-pre-wrap h-full font-code">
-                {output}
-            </pre>
+            <Textarea
+              value={opponentCode}
+              readOnly
+              className="flex-grow font-code bg-background/30 border-0 resize-none"
+            />
           </CardContent>
         </Card>
       </div>
