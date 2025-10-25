@@ -24,6 +24,7 @@ import {
   Trophy,
   Image,
   BookText,
+  Music,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import {
@@ -50,6 +51,7 @@ const aiTools = [
   { href: '/code-summarizer', icon: Wand2, label: 'Code Summarizer' },
   { href: '/code-story', icon: BookText, label: 'Code Story' },
   { href: '/code-image', icon: Image, label: 'Code Image' },
+  { href: '/song-suggester', icon: Music, label: 'Song Suggester' },
 ]
 
 export default function AppSidebar() {
