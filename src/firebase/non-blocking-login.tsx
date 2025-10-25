@@ -18,7 +18,23 @@ export function initiateAnonymousSignIn(authInstance: Auth): void {
 /** Initiate email/password sign-up (non-blocking). */
 export function initiateEmailSignUp(authInstance: Auth, email: string, password: string): void {
   // CRITICAL: Call createUserWithEmailAndPassword directly. Do NOT use 'await createUserWithEmailAndPassword(...)'.
-  createUserWithEmailAndPassword(authInstance, email, password);
+  createUserWithEmailAndPassword(authInstance, email, password)
+    .catch(error => {
+      if (error.code === 'auth/email-already-in-use') {
+        toast({
+            variant: "destructive",
+            title: "Sign-up Failed",
+            description: "This email address is already in use. Please sign in or use a different email.",
+        });
+      } else {
+        console.error("An unexpected error occurred during sign-up:", error);
+        toast({
+            variant: "destructive",
+            title: "Uh oh! Something went wrong.",
+            description: "An unexpected error occurred during sign-up. Please try again later.",
+        });
+      }
+    });
   // Code continues immediately. Auth state change is handled by onAuthStateChanged listener.
 }
 
