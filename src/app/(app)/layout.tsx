@@ -32,7 +32,7 @@ export default function AppLayout({
       <div className="flex items-center justify-center min-h-screen bg-background text-foreground">
         <div className="flex items-center gap-2">
           <Loader2 className="w-6 h-6 animate-spin text-primary" />
-          <span className="text-muted-foreground">Loading Devareana...</span>
+          <span className="text-muted-foreground">Loading DevArena...</span>
         </div>
       </div>
     );

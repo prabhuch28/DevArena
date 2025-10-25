@@ -62,7 +62,7 @@ export default function SignupPage() {
           </div>
           <CardTitle className="font-headline text-3xl">Create an Account</CardTitle>
           <CardDescription>
-            Join Devareana and start your journey.
+            Join DevArena and start your journey.
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">

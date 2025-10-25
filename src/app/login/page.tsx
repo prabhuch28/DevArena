@@ -54,7 +54,7 @@ export default function LoginPage() {
           <div className="flex justify-center items-center mb-4">
             <GitBranch className="w-12 h-12 text-primary" />
           </div>
-          <CardTitle className="font-headline text-3xl">Welcome to Devareana</CardTitle>
+          <CardTitle className="font-headline text-3xl">Welcome to DevArena</CardTitle>
           <CardDescription>Sign in to enter the arena</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
