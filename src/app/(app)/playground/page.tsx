@@ -5,16 +5,32 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 const toolCategories = [
     { 
+        name: 'Client', 
+        tools: ['Browser', 'Mobile App', 'User', 'Device']
+    },
+    {
         name: 'API', 
-        tools: ['Endpoint', 'Request', 'Response', 'Middleware']
+        tools: ['API Gateway', 'Endpoint', 'Request', 'Response']
+    },
+    {
+        name: 'Services',
+        tools: ['Microservice', 'Lambda', 'Worker', 'Auth Service']
     },
     {
         name: 'Database',
-        tools: ['Query', 'Save', 'Find One', 'Find All']
+        tools: ['SQL Database', 'NoSQL DB', 'Data Warehouse', 'Replication']
+    },
+    {
+        name: 'Caching',
+        tools: ['Cache', 'Redis', 'CDN', 'Invalidate']
+    },
+    {
+        name: 'Messaging',
+        tools: ['Message Queue', 'Pub/Sub', 'Event Bus', 'Webhook']
     },
     {
         name: 'Authentication',
-        tools: ['Sign Up', 'Sign In', 'Verify JWT', 'Middleware']
+        tools: ['Sign Up', 'Sign In', 'Verify JWT', 'OAuth 2.0']
     },
     {
         name: 'Logic',
