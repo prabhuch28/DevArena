@@ -42,7 +42,7 @@ const navItems = [
   { href: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
   { href: '/playground', icon: ToyBrick, label: 'Playground' },
   { href: '/tutorials', icon: Presentation, label: 'Visual Tutorials' },
-  { href: '/code-story', icon: Wand2, label: 'Code Story' },
+  { href: '/code-summarizer', icon: Wand2, label: 'Code Summarizer' },
   { href: '/docs', icon: BookOpen, label: 'Documentation' },
 ];
 
