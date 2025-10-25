@@ -13,7 +13,7 @@ const tutorials = [
         description: 'Learn the fundamentals of creating and interacting with API endpoints.',
         duration: '15 min',
         difficulty: 'Beginner',
-        imageUrl: 'https://picsum.photos/seed/301/600/400',
+        imageUrl: 'https://picsum.photos/seed/api/600/400',
         imageHint: 'api network',
         challengeId: 'two-sum',
         challengeTitle: 'Two Sum'
@@ -24,7 +24,7 @@ const tutorials = [
         description: 'A step-by-step guide to implementing JSON Web Token authentication.',
         duration: '25 min',
         difficulty: 'Intermediate',
-        imageUrl: 'https://picsum.photos/seed/302/600/400',
+        imageUrl: 'https://picsum.photos/seed/security/600/400',
         imageHint: 'security lock',
         challengeId: 'valid-parentheses',
         challengeTitle: 'Valid Parentheses'
@@ -35,8 +35,8 @@ const tutorials = [
         description: 'From simple lookups to complex joins, visualize how data is retrieved.',
         duration: '30 min',
         difficulty: 'Intermediate',
-        imageUrl: 'https://picsum.photos/seed/303/600/400',
-        imageHint: 'database server',
+        imageUrl: 'https://picsum.photos/seed/database/600/400',
+        imageHint: 'data server',
         challengeId: 'merge-two-sorted-lists',
         challengeTitle: 'Merge Two Sorted Lists'
     },
@@ -46,7 +46,7 @@ const tutorials = [
         description: 'Explore different caching techniques like Redis to speed up your app.',
         duration: '20 min',
         difficulty: 'Advanced',
-        imageUrl: 'https://picsum.photos/seed/304/600/400',
+        imageUrl: 'https://picsum.photos/seed/caching/600/400',
         imageHint: 'fast speed',
         challengeId: 'lru-cache',
         challengeTitle: 'LRU Cache'
