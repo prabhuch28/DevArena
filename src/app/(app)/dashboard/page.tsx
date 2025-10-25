@@ -8,12 +8,14 @@ import {
 } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import { ListChecks, ToyBrick, Presentation, BookOpen } from 'lucide-react';
+import { ListChecks, ToyBrick, Presentation, BookOpen, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
+import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 
-const todoItems = [
+const initialTodoItems = [
     { id: 1, title: 'Explore the Interactive Playground', completed: false, href: '/playground' },
     { id: 2, title: 'Watch the "API Endpoints" tutorial', completed: false, href: '/tutorials/api-endpoints' },
     { id: 3, title: 'Read the documentation on JWT Authentication', completed: false, href: '/docs/jwt' },
@@ -22,6 +24,28 @@ const todoItems = [
 
 export default function DashboardPage() {
   const { user } = useUser();
+  const [todoItems, setTodoItems] = useState(initialTodoItems);
+  const { toast } = useToast();
+
+  const handleTodoChange = (id: number) => {
+    setTodoItems(prevItems => {
+        const newItems = prevItems.map(item => {
+            if (item.id === id) {
+                const updatedItem = { ...item, completed: !item.completed };
+                if (updatedItem.completed) {
+                    toast({
+                        title: 'Task Completed!',
+                        description: `Great job on finishing: "${updatedItem.title}"`,
+                        action: <CheckCircle2 className="text-green-500" />
+                    });
+                }
+                return updatedItem;
+            }
+            return item;
+        });
+        return newItems;
+    });
+  };
 
   return (
     <div className="flex flex-col gap-8">
@@ -73,11 +97,12 @@ export default function DashboardPage() {
                 <Checkbox
                   id={`todo-${item.id}`}
                   checked={item.completed}
+                  onCheckedChange={() => handleTodoChange(item.id)}
                   aria-label={item.title}
                 />
                 <label
                   htmlFor={`todo-${item.id}`}
-                  className={`flex-grow text-sm ${item.completed ? 'text-muted-foreground line-through' : ''}`}
+                  className={`flex-grow text-sm cursor-pointer ${item.completed ? 'text-muted-foreground line-through' : ''}`}
                 >
                   {item.title}
                 </label>
