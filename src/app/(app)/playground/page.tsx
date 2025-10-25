@@ -21,6 +21,7 @@ import ReactFlow, {
   OnConnect,
   Background,
   Controls,
+  MarkerType,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
@@ -77,7 +78,10 @@ export default function PlaygroundPage() {
     [setEdges]
   );
   const onConnect: OnConnect = useCallback(
-    (connection) => setEdges((eds) => addEdge(connection, eds)),
+    (connection) => {
+      const edge = { ...connection, type: 'default', markerEnd: { type: MarkerType.ArrowClosed } };
+      setEdges((eds) => addEdge(edge, eds));
+    },
     [setEdges]
   );
 
