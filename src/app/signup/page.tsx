@@ -49,13 +49,13 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background">
-      <Card className="w-full max-w-sm">
+    <div className="flex items-center justify-center min-h-screen bg-secondary p-4">
+      <Card className="w-full max-w-sm border-0 bg-background shadow-2xl shadow-black/50">
         <CardHeader className="text-center">
           <div className="flex justify-center items-center mb-4">
-            <Atom className="w-10 h-10 text-primary" />
+            <Atom className="w-12 h-12 text-primary" />
           </div>
-          <CardTitle className="font-headline text-2xl">Create an Account</CardTitle>
+          <CardTitle className="font-headline text-3xl">Create an Account</CardTitle>
           <CardDescription>
             Join AlgoVerse and start your coding adventure.
           </CardDescription>
@@ -70,6 +70,7 @@ export default function SignupPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="bg-secondary border-0"
             />
           </div>
           <div className="grid gap-2">
@@ -80,6 +81,7 @@ export default function SignupPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="bg-secondary border-0"
             />
           </div>
           <div className="grid gap-2">
@@ -90,6 +92,7 @@ export default function SignupPage() {
               required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              className="bg-secondary border-0"
             />
           </div>
         </CardContent>
@@ -99,7 +102,7 @@ export default function SignupPage() {
           </Button>
           <p className="text-xs text-center text-muted-foreground">
             Already have an account?{' '}
-            <Link href="/login" className="underline font-medium text-primary">
+            <Link href="/login" className="underline font-medium text-primary hover:text-primary/80">
               Sign in
             </Link>
           </p>

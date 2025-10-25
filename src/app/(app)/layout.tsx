@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 
 import AppSidebar from '@/components/app-sidebar';
 import AppHeader from '@/components/app-header';
+import { Loader2 } from 'lucide-react';
 
 export default function AppLayout({
   children,
@@ -27,8 +28,11 @@ export default function AppLayout({
 
   if (isUserLoading || !user) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <p>Loading...</p>
+      <div className="flex items-center justify-center min-h-screen bg-background text-foreground">
+        <div className="flex items-center gap-2">
+          <Loader2 className="w-6 h-6 animate-spin text-primary" />
+          <span className="text-muted-foreground">Loading your AlgoVerse...</span>
+        </div>
       </div>
     );
   }
@@ -38,7 +42,7 @@ export default function AppLayout({
       <AppSidebar />
       <SidebarInset>
         <AppHeader />
-        <main className="p-4 lg:p-6">{children}</main>
+        <main className="p-4 lg:p-8 bg-secondary/50">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

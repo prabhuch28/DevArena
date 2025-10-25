@@ -32,7 +32,7 @@ import {
 } from './ui/dropdown-menu';
 import { Button } from './ui/button';
 import { useAuth, useUser } from '@/firebase';
-import { getAuth, signOut } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -59,15 +59,15 @@ export default function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="p-4">
+      <SidebarHeader>
         <Link href="/dashboard" className="flex items-center gap-2">
           <Atom className="w-8 h-8 text-primary" />
-          <h1 className="font-headline text-2xl font-bold text-primary-foreground">
+          <h1 className="font-headline text-2xl font-bold text-sidebar-foreground group-data-[collapsible=icon]:hidden">
             AlgoVerse
           </h1>
         </Link>
       </SidebarHeader>
-      <SidebarContent className="p-4">
+      <SidebarContent>
         <SidebarMenu>
           {navItems.map((item) => (
             <SidebarMenuItem key={item.href}>
@@ -75,22 +75,23 @@ export default function AppSidebar() {
                 <SidebarMenuButton
                   isActive={pathname.startsWith(item.href)}
                   tooltip={item.label}
+                  className="group-data-[collapsible=icon]:justify-center"
                 >
                   <item.icon />
-                  <span>{item.label}</span>
+                  <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className="p-4">
+      <SidebarFooter>
         {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="w-full justify-start items-center gap-3 p-2 h-auto text-left"
+                className="w-full justify-start items-center gap-3 p-2 h-auto text-left group-data-[collapsible=icon]:justify-center"
               >
                 <Avatar className="h-9 w-9">
                   <AvatarImage src={user.photoURL || `https://picsum.photos/seed/${user.uid}/40/40`} data-ai-hint="person" />

@@ -43,13 +43,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background">
-      <Card className="w-full max-w-sm">
+    <div className="flex items-center justify-center min-h-screen bg-secondary p-4">
+      <Card className="w-full max-w-sm border-0 bg-background shadow-2xl shadow-black/50">
         <CardHeader className="text-center">
           <div className="flex justify-center items-center mb-4">
-            <Atom className="w-10 h-10 text-primary" />
+            <Atom className="w-12 h-12 text-primary" />
           </div>
-          <CardTitle className="font-headline text-2xl">Welcome Back</CardTitle>
+          <CardTitle className="font-headline text-3xl">Welcome Back</CardTitle>
           <CardDescription>Sign in to continue your journey in AlgoVerse</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
@@ -62,6 +62,7 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="bg-secondary border-0"
             />
           </div>
           <div className="grid gap-2">
@@ -72,6 +73,7 @@ export default function LoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="bg-secondary border-0"
             />
           </div>
         </CardContent>
@@ -81,7 +83,7 @@ export default function LoginPage() {
           </Button>
           <p className="text-xs text-center text-muted-foreground">
             Don't have an account?{' '}
-            <Link href="/signup" className="underline font-medium text-primary">
+            <Link href="/signup" className="underline font-medium text-primary hover:text-primary/80">
               Sign up
             </Link>
           </p>
