@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import {
   Bot,
   Loader2,
-  MessageSquare,
   Send,
   User,
   X,
@@ -27,6 +26,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { getAiMentorAssistance } from '@/ai/flows/ai-mentor-assistance';
 import { usePathname } from 'next/navigation';
+import ReactMarkdown from 'react-markdown';
 
 interface ChatMessage {
   sender: 'user' | 'ai';
@@ -126,7 +126,14 @@ export function AiMentorWidget() {
                           : 'bg-secondary'
                       }`}
                     >
-                      {msg.text}
+                      <ReactMarkdown 
+                        className="prose prose-sm prose-invert max-w-none"
+                        components={{
+                          p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                        }}
+                      >
+                        {msg.text}
+                      </ReactMarkdown>
                     </div>
                     {msg.sender === 'user' && (
                       <Avatar className="w-8 h-8 border">

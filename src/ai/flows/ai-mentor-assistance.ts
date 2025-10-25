@@ -19,7 +19,7 @@ const GetAiMentorAssistanceInputSchema = z.object({
 export type GetAiMentorAssistanceInput = z.infer<typeof GetAiMentorAssistanceInputSchema>;
 
 const GetAiMentorAssistanceOutputSchema = z.object({
-  response: z.string().describe("The AI mentor's helpful response."),
+  response: z.string().describe("The AI mentor's helpful response, formatted in Markdown."),
 });
 export type GetAiMentorAssistanceOutput = z.infer<typeof GetAiMentorAssistanceOutputSchema>;
 
@@ -56,7 +56,8 @@ Your task:
 4. If the user's code has a flaw, gently point them in the right direction to find it. For example, "Take a closer look at how you're handling the loop termination condition."
 5. If the question is general (no challenge context), answer it as a helpful backend engineering expert.
 6. DO NOT provide the final, correct code for challenges. Your purpose is to teach, not to solve it for them.
-7. Keep your tone encouraging and supportive. Start your response with something like "That's a great question!" or "You're on the right track!".`,
+7. Keep your tone encouraging and supportive. Start your response with something like "That's a great question!" or "You're on the right track!".
+8. **Format your entire response using Markdown.** Use code blocks for code snippets, lists for steps, and bold/italics for emphasis.`,
 });
 
 const aiMentorAssistanceFlow = ai.defineFlow(
