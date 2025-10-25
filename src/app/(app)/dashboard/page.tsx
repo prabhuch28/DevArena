@@ -8,18 +8,21 @@ import {
 } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import { ListChecks, ToyBrick, Presentation, BookOpen, CheckCircle2 } from 'lucide-react';
+import { ListChecks, ToyBrick, Presentation, BookOpen, CheckCircle2, Star, Trophy, Zap, History } from 'lucide-react';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { recentActivities } from '@/lib/activity-data';
 
 
 const initialTodoItems = [
-    { id: 1, title: 'Explore the Interactive Playground', completed: false, href: '/playground' },
-    { id: 2, title: 'Watch the "API Endpoints" tutorial', completed: false, href: '/tutorials/api-endpoints' },
-    { id: 3, title: 'Read the documentation on JWT Authentication', completed: false, href: '/docs/jwt' },
-    { id: 4, title: 'Build a simple login flow visually', completed: false, href: '/playground' },
+    { id: 1, title: 'Explore the Interactive Playground', completed: false, href: '/playground', icon: <ToyBrick className="w-4 h-4" /> },
+    { id: 2, title: 'Watch the "API Endpoints" tutorial', completed: false, href: '/tutorials/api-endpoints', icon: <Presentation className="w-4 h-4" /> },
+    { id: 3, title: 'Read docs on JWT Authentication', completed: false, href: '/docs/jwt', icon: <BookOpen className="w-4 h-4" /> },
+    { id: 4, title: 'Complete the "Two Sum" challenge', completed: false, href: '/challenges/two-sum', icon: <Zap className="w-4 h-4" /> },
 ];
 
 export default function DashboardPage() {
@@ -51,100 +54,116 @@ export default function DashboardPage() {
     <div className="flex flex-col gap-8">
       <div>
         <h1 className="font-headline text-3xl font-bold tracking-tight">
-          Welcome, {user?.displayName || 'Developer'}!
+          Welcome back, {user?.displayName || 'Developer'}!
         </h1>
-        <p className="text-muted-foreground">Let's demystify the backend, one block at a time.</p>
+        <p className="text-muted-foreground">Let's continue to demystify the backend, one block at a time.</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <FeatureCard
-            title="Interactive Playground"
-            description="Visually construct and understand backend logic with a drag-and-drop canvas."
-            icon={<ToyBrick className="w-10 h-10 text-primary" />}
-            href="/playground"
-            cta="Open Playground"
-        />
-        <FeatureCard
-            title="Visual Tutorials"
-            description="Learn complex topics through step-by-step animated tutorials."
-            icon={<Presentation className="w-10 h-10 text-primary" />}
-            href="/tutorials"
-            cta="Browse Tutorials"
-        />
-        <FeatureCard
-            title="Documentation"
-            description="Dive deep into concepts with our comprehensive, easy-to-read docs."
-            icon={<BookOpen className="w-10 h-10 text-primary" />}
-            href="/docs"
-            cta="Read Docs"
-        />
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Main Content */}
+        <div className="lg:col-span-2 flex flex-col gap-6">
+            <div className="grid gap-6 md:grid-cols-3">
+                <StatCard title="Total XP" value="8,500" icon={<Star className="w-6 h-6 text-yellow-400"/>} />
+                <StatCard title="Challenges Solved" value="12" icon={<Zap className="w-6 h-6 text-green-500"/>} />
+                <StatCard title="Global Rank" value="#7" icon={<Trophy className="w-6 h-6 text-blue-400"/>} />
+            </div>
+
+            <Card>
+                <CardHeader>
+                <CardTitle className="font-headline flex items-center gap-2">
+                    <History />
+                    Recent Activity
+                </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <ul className="space-y-4">
+                        {recentActivities.map(activity => (
+                            <li key={activity.id} className="flex items-center gap-3">
+                                <div className="p-2 bg-secondary rounded-full">{activity.icon}</div>
+                                <div className="flex-grow text-sm">
+                                    <p className="font-medium">{activity.description}</p>
+                                    <p className="text-xs text-muted-foreground">{activity.time}</p>
+                                </div>
+                                {activity.points && (
+                                    <Badge variant="secondary">+{activity.points} XP</Badge>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                </CardContent>
+            </Card>
+        </div>
+
+        {/* Right Sidebar */}
+        <div className="lg:col-span-1 flex flex-col gap-6">
+            <Card>
+                <CardHeader>
+                <CardTitle className="font-headline flex items-center gap-2">
+                    <ListChecks />
+                    Your Learning Path
+                </CardTitle>
+                <CardDescription>
+                    Suggested next steps to get you started.
+                </CardDescription>
+                </CardHeader>
+                <CardContent>
+                <ul className="space-y-4">
+                    {todoItems.map((item) => (
+                    <li key={item.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/80 transition-colors">
+                        <Checkbox
+                        id={`todo-${item.id}`}
+                        checked={item.completed}
+                        onCheckedChange={() => handleTodoChange(item.id)}
+                        aria-label={item.title}
+                        />
+                         <div className={`p-2 rounded-full ${item.completed ? 'bg-green-500/20 text-green-400' : 'bg-secondary'}`}>
+                            {item.icon}
+                        </div>
+                        <label
+                        htmlFor={`todo-${item.id}`}
+                        className={`flex-grow text-sm cursor-pointer ${item.completed ? 'text-muted-foreground line-through' : ''}`}
+                        >
+                        {item.title}
+                        </label>
+                    </li>
+                    ))}
+                </ul>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline">Quick Links</CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-col gap-2">
+                     <Button asChild variant="outline">
+                        <Link href="/playground"><ToyBrick className="mr-2"/> Open Playground</Link>
+                    </Button>
+                    <Button asChild variant="outline">
+                        <Link href="/tutorials"><Presentation className="mr-2"/> Browse Tutorials</Link>
+                    </Button>
+                    <Button asChild variant="outline">
+                        <Link href="/docs"><BookOpen className="mr-2"/> Read Docs</Link>
+                    </Button>
+                </CardContent>
+            </Card>
+        </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="font-headline flex items-center gap-2">
-            <ListChecks />
-            Your Learning Path
-          </CardTitle>
-          <CardDescription>
-            Here are some suggested next steps to get you started.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ul className="space-y-4">
-            {todoItems.map((item) => (
-              <li key={item.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/80 transition-colors">
-                <Checkbox
-                  id={`todo-${item.id}`}
-                  checked={item.completed}
-                  onCheckedChange={() => handleTodoChange(item.id)}
-                  aria-label={item.title}
-                />
-                <label
-                  htmlFor={`todo-${item.id}`}
-                  className={`flex-grow text-sm cursor-pointer ${item.completed ? 'text-muted-foreground line-through' : ''}`}
-                >
-                  {item.title}
-                </label>
-                <Button variant="ghost" size="sm" asChild>
-                    <Link href={item.href}>Go</Link>
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
     </div>
   );
 }
 
-function FeatureCard({
-  title,
-  description,
-  icon,
-  href,
-  cta
-}: {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  href: string;
-  cta: string;
-}) {
-  return (
-    <Card className="flex flex-col">
-      <CardHeader className="flex flex-col items-start gap-4">
-        {icon}
-        <CardTitle className="font-headline text-xl">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex-grow">
-        <p className="text-muted-foreground text-sm">{description}</p>
-      </CardContent>
-      <CardContent>
-         <Button asChild className="w-full">
-            <Link href={href}>{cta}</Link>
-        </Button>
-      </CardContent>
-    </Card>
-  );
+function StatCard({ title, value, icon }: { title: string; value: string; icon: React.ReactNode }) {
+    return (
+        <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
+                {icon}
+            </CardHeader>
+            <CardContent>
+                <div className="text-2xl font-bold">{value}</div>
+            </CardContent>
+        </Card>
+    );
 }
