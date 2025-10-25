@@ -1,0 +1,550 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the AlgoVerse platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user entity."
+        },
+        "username": {
+          "type": "string",
+          "description": "The username of the user."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the user.",
+          "format": "email"
+        },
+        "registrationDate": {
+          "type": "string",
+          "description": "The date and time the user registered.",
+          "format": "date-time"
+        },
+        "profileId": {
+          "type": "string",
+          "description": "Reference to the UserProfile. (Relationship: User 1:1 UserProfile)"
+        }
+      },
+      "required": [
+        "id",
+        "username",
+        "email",
+        "registrationDate",
+        "profileId"
+      ]
+    },
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Stores profile information for a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user profile."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The display name of the user."
+        },
+        "bio": {
+          "type": "string",
+          "description": "A short biography of the user."
+        },
+        "avatarUrl": {
+          "type": "string",
+          "description": "URL of the user's avatar image.",
+          "format": "uri"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the User. (Relationship: User 1:1 UserProfile)"
+        }
+      },
+      "required": [
+        "id",
+        "displayName",
+        "bio",
+        "avatarUrl",
+        "userId"
+      ]
+    },
+    "Challenge": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Challenge",
+      "type": "object",
+      "description": "Represents a coding challenge on the platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the challenge."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the challenge."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the challenge."
+        },
+        "difficulty": {
+          "type": "string",
+          "description": "The difficulty level of the challenge (e.g., Easy, Medium, Hard)."
+        },
+        "xpReward": {
+          "type": "number",
+          "description": "The amount of XP awarded for completing the challenge."
+        },
+        "coinReward": {
+          "type": "number",
+          "description": "The number of coins awarded for completing the challenge."
+        },
+        "categoryId": {
+          "type": "string",
+          "description": "Reference to the Category. (Relationship: Category 1:N Challenge)"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description",
+        "difficulty",
+        "xpReward",
+        "coinReward",
+        "categoryId"
+      ]
+    },
+    "Category": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Category",
+      "type": "object",
+      "description": "Represents a category of coding challenges.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the category."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the category (e.g., Arrays, Trees, Dynamic Programming)."
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "Submission": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Submission",
+      "type": "object",
+      "description": "Represents a user's submission for a coding challenge.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the submission."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the User. (Relationship: User 1:N Submission)"
+        },
+        "challengeId": {
+          "type": "string",
+          "description": "Reference to the Challenge. (Relationship: Challenge 1:N Submission)"
+        },
+        "code": {
+          "type": "string",
+          "description": "The code submitted by the user."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "The date and time the submission was made.",
+          "format": "date-time"
+        },
+        "isCorrect": {
+          "type": "boolean",
+          "description": "Indicates whether the submission was correct."
+        },
+        "score": {
+          "type": "number",
+          "description": "The score achieved by the user for the submission."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "challengeId",
+        "code",
+        "submissionDate",
+        "isCorrect",
+        "score"
+      ]
+    },
+    "Leaderboard": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Leaderboard",
+      "type": "object",
+      "description": "Represents a leaderboard, either global, weekly, or college-specific.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the leaderboard."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the leaderboard (e.g., Global, Weekly, College)."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of leaderboard (e.g., global, weekly, college)."
+        },
+        "startDate": {
+          "type": "string",
+          "description": "The start date for the leaderboard (relevant for weekly and college leaderboards).",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "description": "The end date for the leaderboard (relevant for weekly and college leaderboards).",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "type",
+        "startDate",
+        "endDate"
+      ]
+    },
+    "LeaderboardEntry": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "LeaderboardEntry",
+      "type": "object",
+      "description": "Represents a single entry on a leaderboard for a specific user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the leaderboard entry."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the User. (Relationship: User 1:N LeaderboardEntry)"
+        },
+        "leaderboardId": {
+          "type": "string",
+          "description": "Reference to the Leaderboard. (Relationship: Leaderboard 1:N LeaderboardEntry)"
+        },
+        "score": {
+          "type": "number",
+          "description": "The score of the user on the leaderboard."
+        },
+        "rank": {
+          "type": "number",
+          "description": "The rank of the user on the leaderboard."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "leaderboardId",
+        "score",
+        "rank"
+      ]
+    },
+    "Badge": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Badge",
+      "type": "object",
+      "description": "Represents a badge that a user can earn.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the badge."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the badge."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the badge and how to earn it."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the badge image.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "imageUrl"
+      ]
+    },
+    "UserBadge": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserBadge",
+      "type": "object",
+      "description": "Represents the association between a user and a badge they have earned.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user badge association."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the User. (Relationship: User 1:N UserBadge)"
+        },
+        "badgeId": {
+          "type": "string",
+          "description": "Reference to the Badge. (Relationship: Badge 1:N UserBadge)"
+        },
+        "dateEarned": {
+          "type": "string",
+          "description": "The date and time the badge was earned.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "badgeId",
+        "dateEarned"
+      ]
+    },
+    "AiMentorRequest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AiMentorRequest",
+      "type": "object",
+      "description": "Represents a request made to the AI mentor for personalized hints or explanations.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the AI mentor request."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the User. (Relationship: User 1:N AiMentorRequest)"
+        },
+        "challengeId": {
+          "type": "string",
+          "description": "Reference to the Challenge. (Relationship: Challenge 1:N AiMentorRequest)"
+        },
+        "requestDate": {
+          "type": "string",
+          "description": "The date and time the AI mentor request was made.",
+          "format": "date-time"
+        },
+        "query": {
+          "type": "string",
+          "description": "The user's query or request to the AI mentor."
+        },
+        "response": {
+          "type": "string",
+          "description": "The AI mentor's response to the user's query."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "challengeId",
+        "requestDate",
+        "query",
+        "response"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user account information. Path-based ownership for simplified security rules.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/profile",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profile information. Nested under /users/{userId} for clear ownership and simplified security.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/challenges/{challengeId}",
+        "definition": {
+          "entityName": "Challenge",
+          "schema": {
+            "$ref": "#/backend/entities/Challenge"
+          },
+          "description": "Stores coding challenges.",
+          "params": [
+            {
+              "name": "challengeId",
+              "description": "The unique identifier for the challenge."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/categories/{categoryId}",
+        "definition": {
+          "entityName": "Category",
+          "schema": {
+            "$ref": "#/backend/entities/Category"
+          },
+          "description": "Stores categories for coding challenges.",
+          "params": [
+            {
+              "name": "categoryId",
+              "description": "The unique identifier for the category."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/submissions/{submissionId}",
+        "definition": {
+          "entityName": "Submission",
+          "schema": {
+            "$ref": "#/backend/entities/Submission"
+          },
+          "description": "Stores user submissions for coding challenges. Nested under /users/{userId} for clear ownership. Includes challengeId.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "submissionId",
+              "description": "The unique identifier for the submission."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/leaderboards/{leaderboardId}",
+        "definition": {
+          "entityName": "Leaderboard",
+          "schema": {
+            "$ref": "#/backend/entities/Leaderboard"
+          },
+          "description": "Stores leaderboard information.",
+          "params": [
+            {
+              "name": "leaderboardId",
+              "description": "The unique identifier for the leaderboard."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/leaderboards/{leaderboardId}/entries/{userId}",
+        "definition": {
+          "entityName": "LeaderboardEntry",
+          "schema": {
+            "$ref": "#/backend/entities/LeaderboardEntry"
+          },
+          "description": "Stores leaderboard entries for users. Nested under /leaderboards/{leaderboardId} and keyed by {userId}.",
+          "params": [
+            {
+              "name": "leaderboardId",
+              "description": "The unique identifier for the leaderboard."
+            },
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/badges/{badgeId}",
+        "definition": {
+          "entityName": "Badge",
+          "schema": {
+            "$ref": "#/backend/entities/Badge"
+          },
+          "description": "Stores badge information.",
+          "params": [
+            {
+              "name": "badgeId",
+              "description": "The unique identifier for the badge."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/badges/{badgeId}",
+        "definition": {
+          "entityName": "UserBadge",
+          "schema": {
+            "$ref": "#/backend/entities/UserBadge"
+          },
+          "description": "Stores user badges. Nested under /users/{userId} for clear ownership.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "badgeId",
+              "description": "The unique identifier for the badge."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/ai_mentor_requests/{aiMentorRequestId}",
+        "definition": {
+          "entityName": "AiMentorRequest",
+          "schema": {
+            "$ref": "#/backend/entities/AiMentorRequest"
+          },
+          "description": "Stores AI mentor requests made by users. Nested under /users/{userId} for clear ownership.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "aiMentorRequestId",
+              "description": "The unique identifier for the AI mentor request."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to support the AlgoVerse platform, emphasizing secure and scalable data management. The core principle is Authorization Independence, achieved by denormalizing authorization data to avoid `get()` calls in security rules. This ensures atomic operations and simplifies debugging. Path-based ownership is used where appropriate to reflect user-owned data.\n\n**Users and Profiles:** User data and profiles are stored in separate collections under `/users/{userId}` and `/users/{userId}/profile` respectively. This separation allows for distinct security rules if needed. The profile data is nested under the user to establish clear ownership and simplify data retrieval.\n\n**Challenges and Categories:** Challenges and categories are stored in top-level collections: `/challenges` and `/categories`. This segregation simplifies querying and management. Challenges include a `categoryId` to link them to categories.\n\n**Submissions:** Submissions are nested under the user that created them under `/users/{userId}/submissions/{submissionId}`. This path-based ownership simplifies security rules. The submission also contains the `challengeId` to keep a reference to the specific challenge.\n\n**Leaderboards and Leaderboard Entries:** Leaderboards are stored in the top-level `/leaderboards` collection. Leaderboard entries are nested under the leaderboard and the user under `/leaderboards/{leaderboardId}/entries/{userId}` to ensure proper relationships and efficient data retrieval.\n\n**Badges and User Badges:** Badges are stored in the top-level `/badges` collection. User badges are stored under the user that owns them under `/users/{userId}/badges/{badgeId}`. This path-based ownership simplifies security rules.\n\n**AI Mentor Requests:** AI Mentor Requests are stored under the user that requested help under `/users/{userId}/ai_mentor_requests/{aiMentorRequestId}`. This ensures that each user can only access their own requests.\n\n**Authorization Independence (Denormalization):** For collections where access depends on parent data (e.g., submissions belonging to a user), the user ID is implicitly present in the document path, eliminating the need for `get()` calls to the parent document. For collaborative scenarios (not explicitly present but anticipated), a membership map (`members: {uid1: "
+  }
+}

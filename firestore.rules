@@ -1,0 +1,255 @@
+/**
+ * @file Firestore Security Rules for AlgoVerse Platform
+ * @version Prototyping Mode - Data shape is flexible, authorization is strict.
+ *
+ * @Core Philosophy:
+ * This ruleset enforces a strict user-ownership model for user-specific data,
+ * while allowing public read access to shared content.  All write operations
+ * are protected by authorization checks based on the authenticated user's ID.
+ *
+ * @Data Structure:
+ * - User-specific data is nested under `/users/{userId}`. This includes profile
+ *   information, submissions, badges, and AI mentor requests.
+ * - Shared data (challenges, categories, leaderboards, and badges) are stored in
+ *   top-level collections.
+ * - Leaderboard entries are nested under `/leaderboards/{leaderboardId}/entries/{userId}`
+ *
+ * @Key Security Decisions:
+ * - User data is strictly controlled by the owning user.
+ * - Public listing of user-specific collections is disallowed to prevent information leakage.
+ * - Leaderboards, Challenges, Categories, and Badges are publicly readable. Write access
+ *   to these collections is implicitly denied for end-users in this initial ruleset,
+ *   but should be protected by a privileged role in future iterations.
+ * - Data validation is limited to authorization-critical fields to enable rapid prototyping.
+ *
+ * @Denormalization for Authorization:
+ * - User-specific data is nested under `/users/{userId}`, so authorization checks
+ *   can rely on the path instead of requiring additional `get()` calls.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description: Secure user accounts, only the authenticated user can read/write their own data.
+     * @path: /users/{userId}
+     * @allow: (create) - Authenticated user with request.auth.uid == userId
+     * @allow: (get, update, delete) - Authenticated user with request.auth.uid == userId
+     * @deny: (create, get, update, delete) - Authenticated user with request.auth.uid != userId
+     * @principle: Enforces document ownership for all operations.
+     */
+    match /users/{userId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+          return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if false; // Explicitly prevent listing of users
+
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description: Secure user profiles nested under /users/{userId}, ensuring only the owning user can manage their profile.
+     * @path: /users/{userId}/profile
+     * @allow: (create) - Authenticated user with request.auth.uid == userId
+     * @allow: (get, update, delete) - Authenticated user with request.auth.uid == userId
+     * @deny: (create, get, update, delete) - Authenticated user with request.auth.uid != userId
+     * @principle: Restricts access to a user's own profile.
+     */
+    match /users/{userId}/profile {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if false; // Profiles are singletons, so listing makes no sense.
+
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description: Make challenges publicly readable but restrict write access.
+     * @path: /challenges/{challengeId}
+     * @allow: (get, list) - Any user can read challenges.
+     * @deny: (create, update, delete) - Only privileged users can create, update, or delete challenges.
+     * @principle: Allows public read access to challenges while restricting write access to authorized personnel.
+     */
+    match /challenges/{challengeId} {
+      allow get, list: if true; // Publicly readable
+      allow create, update, delete: if false; // TODO: Add admin role check
+    }
+
+    /**
+     * @description: Make categories publicly readable but restrict write access.
+     * @path: /categories/{categoryId}
+     * @allow: (get, list) - Any user can read categories.
+     * @deny: (create, update, delete) - Only privileged users can create, update, or delete categories.
+     * @principle: Allows public read access to categories while restricting write access to authorized personnel.
+     */
+    match /categories/{categoryId} {
+      allow get, list: if true; // Publicly readable
+      allow create, update, delete: if false; // TODO: Add admin role check
+    }
+
+    /**
+     * @description: Secure user submissions, ensuring only the owning user can manage their submissions.
+     * @path: /users/{userId}/submissions/{submissionId}
+     * @allow: (create) - Authenticated user with request.auth.uid == userId
+     * @allow: (get, update, delete) - Authenticated user with request.auth.uid == userId
+     * @deny: (create, get, update, delete) - Authenticated user with request.auth.uid != userId
+     * @principle: Restricts access to a user's own submissions.
+     */
+    match /users/{userId}/submissions/{submissionId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description: Make leaderboards publicly readable but restrict write access.
+     * @path: /leaderboards/{leaderboardId}
+     * @allow: (get, list) - Any user can read leaderboards.
+     * @deny: (create, update, delete) - Only privileged users can create, update, or delete leaderboards.
+     * @principle: Allows public read access to leaderboards while restricting write access to authorized personnel.
+     */
+    match /leaderboards/{leaderboardId} {
+      allow get, list: if true; // Publicly readable
+      allow create, update, delete: if false; // TODO: Add admin role check
+    }
+
+    /**
+     * @description: Secure leaderboard entries, ensuring only the owning user can manage their leaderboard entry.
+     * @path: /leaderboards/{leaderboardId}/entries/{userId}
+     * @allow: (create) - Authenticated user with request.auth.uid == userId
+     * @allow: (get, update, delete) - Authenticated user with request.auth.uid == userId
+     * @deny: (create, get, update, delete) - Authenticated user with request.auth.uid != userId
+     * @principle: Restricts access to a user's own leaderboard entries.
+     */
+    match /leaderboards/{leaderboardId}/entries/{userId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if false; // Listing leaderboard entries should only be done via queries.
+
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description: Make badges publicly readable but restrict write access.
+     * @path: /badges/{badgeId}
+     * @allow: (get, list) - Any user can read badges.
+     * @deny: (create, update, delete) - Only privileged users can create, update, or delete badges.
+     * @principle: Allows public read access to badges while restricting write access to authorized personnel.
+     */
+    match /badges/{badgeId} {
+      allow get, list: if true; // Publicly readable
+      allow create, update, delete: if false; // TODO: Add admin role check
+    }
+
+    /**
+     * @description: Secure user badges, ensuring only the owning user can manage their badges.
+     * @path: /users/{userId}/badges/{badgeId}
+     * @allow: (create) - Authenticated user with request.auth.uid == userId
+     * @allow: (get, update, delete) - Authenticated user with request.auth.uid == userId
+     * @deny: (create, get, update, delete) - Authenticated user with request.auth.uid != userId
+     * @principle: Restricts access to a user's own badges.
+     */
+    match /users/{userId}/badges/{badgeId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description: Secure AI mentor requests, ensuring only the owning user can manage their requests.
+     * @path: /users/{userId}/ai_mentor_requests/{aiMentorRequestId}
+     * @allow: (create) - Authenticated user with request.auth.uid == userId
+     * @allow: (get, update, delete) - Authenticated user with request.auth.uid == userId
+     * @deny: (create, get, update, delete) - Authenticated user with request.auth.uid != userId
+     * @principle: Restricts access to a user's own AI mentor requests.
+     */
+    match /users/{userId}/ai_mentor_requests/{aiMentorRequestId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+  }
+}
