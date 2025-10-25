@@ -54,8 +54,8 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-secondary p-4">
-      <Card className="w-full max-w-sm border-0 bg-background shadow-2xl shadow-black/50">
+    <div className="flex items-center justify-center min-h-screen bg-background p-4">
+      <Card className="w-full max-w-sm border-0 bg-background/50 backdrop-blur-sm shadow-2xl shadow-black/50">
         <CardHeader className="text-center">
           <div className="flex justify-center items-center mb-4">
             <GitBranch className="w-12 h-12 text-primary" />

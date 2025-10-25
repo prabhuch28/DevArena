@@ -46,7 +46,7 @@ export default function ChallengesPage() {
           const totalCount = items.length;
           const progress = (completedCount / totalCount) * 100;
           return (
-            <Card key={category} className="h-full">
+            <Card key={category} className="h-full hover:border-primary/50 transition-colors">
               <CardHeader>
                 <CardTitle className="font-headline">{category}</CardTitle>
                 <CardDescription>{totalCount} challenges</CardDescription>
@@ -68,7 +68,7 @@ export default function ChallengesPage() {
           {challenges.map((challenge) => (
             <Card
               key={challenge.id}
-              className="flex flex-col hover:border-primary transition-colors"
+              className="flex flex-col hover:border-primary/50 transition-colors"
             >
               <CardHeader>
                 <div className="flex justify-between items-start">

@@ -50,7 +50,7 @@ export default function DocsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {docSections.map((section) => (
                 <Link href={section.href} key={section.title}>
-                    <Card className="h-full hover:border-primary transition-colors">
+                    <Card className="h-full hover:border-primary/50 transition-colors">
                         <CardHeader>
                             <CardTitle className="font-headline">{section.title}</CardTitle>
                             <CardDescription>{section.description}</CardDescription>

@@ -67,7 +67,7 @@ export default function TutorialsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {tutorials.map((tutorial) => (
-                    <Card key={tutorial.id} className="flex flex-col overflow-hidden">
+                    <Card key={tutorial.id} className="flex flex-col overflow-hidden hover:border-primary/50 transition-colors">
                         <div className="relative">
                             <Image 
                                 src={tutorial.imageUrl} 

@@ -49,7 +49,7 @@ export default function LeaderboardPage() {
         </div>
       </div>
 
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden bg-background/50 backdrop-blur-sm">
         <CardHeader>
           <CardTitle>Global Rankings</CardTitle>
           <CardDescription>Top 10 developers this season.</CardDescription>
@@ -92,7 +92,7 @@ export default function LeaderboardPage() {
                       <div>
                         <p className="font-medium">{entry.name}</p>
                         {entry.rank === currentUserRank && (
-                          <Badge variant="default" className="mt-1">
+                          <Badge variant="default" className="mt-1 bg-primary/80">
                             You
                           </Badge>
                         )}
