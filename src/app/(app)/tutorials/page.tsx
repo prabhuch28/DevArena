@@ -24,7 +24,7 @@ const tutorials = [
         description: 'A step-by-step guide to implementing JSON Web Token authentication.',
         duration: '25 min',
         difficulty: 'Intermediate',
-        imageUrl: 'https://picsum.photos/seed/security/600/400',
+        imageUrl: 'https://picsum.photos/seed/cyber/600/400',
         imageHint: 'security lock',
         challengeId: 'valid-parentheses',
         challengeTitle: 'Valid Parentheses'
@@ -35,7 +35,7 @@ const tutorials = [
         description: 'From simple lookups to complex joins, visualize how data is retrieved.',
         duration: '30 min',
         difficulty: 'Intermediate',
-        imageUrl: 'https://picsum.photos/seed/database/600/400',
+        imageUrl: 'https://picsum.photos/seed/server/600/400',
         imageHint: 'data server',
         challengeId: 'merge-two-sorted-lists',
         challengeTitle: 'Merge Two Sorted Lists'
@@ -46,8 +46,8 @@ const tutorials = [
         description: 'Explore different caching techniques like Redis to speed up your app.',
         duration: '20 min',
         difficulty: 'Advanced',
-        imageUrl: 'https://picsum.photos/seed/caching/600/400',
-        imageHint: 'fast speed',
+        imageUrl: 'https://picsum.photos/seed/chip/600/400',
+        imageHint: 'computer chip',
         challengeId: 'lru-cache',
         challengeTitle: 'LRU Cache'
     }
