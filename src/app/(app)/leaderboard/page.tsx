@@ -1,4 +1,3 @@
-
 'use client';
 
 import {
@@ -45,7 +44,7 @@ export default function LeaderboardPage() {
         <div>
           <h1 className="font-headline text-4xl font-bold">Leaderboard</h1>
           <p className="text-muted-foreground">
-            See who's at the top of the BackEndVis world.
+            See who's at the top of the Devareana world.
           </p>
         </div>
       </div>

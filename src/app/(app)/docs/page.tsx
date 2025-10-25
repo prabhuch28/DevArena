@@ -5,7 +5,7 @@ import Link from 'next/link';
 const docSections = [
     {
         title: 'Getting Started',
-        description: 'An introduction to BackEndVis and its core features.',
+        description: 'An introduction to Devareana and its core features.',
         href: '/docs/getting-started'
     },
     {
@@ -43,7 +43,7 @@ export default function DocsPage() {
             <div>
                 <h1 className="font-headline text-4xl font-bold">Documentation</h1>
                 <p className="text-muted-foreground">
-                    Your comprehensive guide to mastering BackEndVis.
+                    Your comprehensive guide to mastering Devareana.
                 </p>
             </div>
         </div>

@@ -91,7 +91,7 @@ export default function DashboardPage() {
           Welcome back, {user?.displayName || 'Developer'}!
         </h1>
         <p className="text-muted-foreground">
-          Let's continue to demystify the backend, one block at a time.
+          This is your arena. Let the challenges begin.
         </p>
       </div>
 

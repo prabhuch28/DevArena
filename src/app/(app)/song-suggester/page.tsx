@@ -114,7 +114,7 @@ export default function SongSuggesterPage() {
                     <CardFooter className="flex justify-center">
                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
                             <GitBranch className="w-4 h-4"/>
-                            <span>Powered by BackEndVis AI</span>
+                            <span>Powered by Devareana AI</span>
                          </div>
                     </CardFooter>
                 </Card>

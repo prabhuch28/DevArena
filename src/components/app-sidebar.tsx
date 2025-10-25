@@ -75,7 +75,7 @@ export default function AppSidebar() {
         <Link href="/dashboard" className="flex items-center gap-2">
           <GitBranch className="w-8 h-8 text-primary" />
           <h1 className="font-headline text-2xl font-bold text-sidebar-foreground group-data-[collapsible=icon]:hidden">
-            BackEndVis
+            Devareana
           </h1>
         </Link>
       </SidebarHeader>

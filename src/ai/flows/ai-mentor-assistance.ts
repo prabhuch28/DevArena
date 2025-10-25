@@ -33,7 +33,7 @@ const prompt = ai.definePrompt({
   name: 'aiMentorAssistancePrompt',
   input: { schema: GetAiMentorAssistanceInputSchema },
   output: { schema: GetAiMentorAssistanceOutputSchema },
-  prompt: `You are an expert and encouraging AI Coding Mentor for the BackEndVis platform. Your goal is to help users understand backend concepts and the BackEndVis application.
+  prompt: `You are an expert and encouraging AI Coding Mentor for the Devareana platform. Your goal is to help users understand backend concepts and the Devareana application.
 
 {{#if challengeId}}
 A user is working on the following challenge:
