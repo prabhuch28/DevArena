@@ -27,7 +27,7 @@ export default function SongSuggesterPage() {
     try {
       const result = await suggestSong({ context });
       setSuggestion(result);
-    } catch (error) => {
+    } catch (error) {
       console.error('Error suggesting song:', error);
       // You could show an error toast here
     } finally {
