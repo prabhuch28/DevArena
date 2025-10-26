@@ -24,6 +24,7 @@ import {
   Trophy,
   Image,
   BookText,
+  Disc,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import {
@@ -50,6 +51,7 @@ const aiTools = [
   { href: '/code-summarizer', icon: Wand2, label: 'Code Summarizer' },
   { href: '/code-story', icon: BookText, label: 'Code Story' },
   { href: '/code-image', icon: Image, label: 'Code Image' },
+  { href: '/song-suggester', icon: Disc, label: 'AI Song Suggester' },
 ]
 
 export default function AppSidebar() {
@@ -140,12 +142,12 @@ export default function AppSidebar() {
               >
                 <Avatar className="h-9 w-9">
                   <AvatarImage src={user.photoURL || `https://picsum.photos/seed/${user.uid}/40/40`} data-ai-hint="person" />
-                  <AvatarFallback>{user.email?.charAt(0).toUpperCase()}</AvatarFallback>
+                  <AvatarFallback>{user.isAnonymous ? 'A' : user.email?.charAt(0).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <div className="truncate group-data-[collapsible=icon]:hidden">
-                  <p className="font-medium truncate">{user.displayName || 'Developer'}</p>
+                  <p className="font-medium truncate">{user.displayName || (user.isAnonymous ? 'Anonymous User' : user.email)}</p>
                   <p className="text-xs text-muted-foreground truncate">
-                    {user.email}
+                    {user.isAnonymous ? 'Fingerprint Login' : user.email}
                   </p>
                 </div>
               </Button>

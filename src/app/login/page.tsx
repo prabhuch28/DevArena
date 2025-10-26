@@ -11,12 +11,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/firebase';
-import { initiateEmailSignIn } from '@/firebase/non-blocking-login';
-import { GitBranch, Loader2 } from 'lucide-react';
+import { initiateEmailSignIn, initiateAnonymousSignIn } from '@/firebase/non-blocking-login';
+import { GitBranch, Loader2, Fingerprint } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useUser } from '@/firebase';
+import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -24,6 +26,7 @@ export default function LoginPage() {
   const auth = useAuth();
   const router = useRouter();
   const { user, isUserLoading } = useUser();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (user) {
@@ -36,6 +39,14 @@ export default function LoginPage() {
     initiateEmailSignIn(auth, email, password);
   };
   
+  const handleFingerprintSignIn = () => {
+    toast({
+      title: 'Simulating Fingerprint Scan',
+      description: 'Signing you in with anonymous authentication...',
+    });
+    initiateAnonymousSignIn(auth);
+  }
+
   if (isUserLoading || user) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background text-foreground">
@@ -86,7 +97,18 @@ export default function LoginPage() {
           <Button className="w-full" onClick={handleSignIn}>
             Sign In
           </Button>
-          <p className="text-xs text-center text-muted-foreground">
+
+          <div className="relative w-full">
+            <Separator className="my-2" />
+            <span className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-background/50 px-2 text-xs text-muted-foreground">OR</span>
+          </div>
+
+          <Button variant="outline" className="w-full" onClick={handleFingerprintSignIn}>
+            <Fingerprint className="mr-2 h-4 w-4" />
+            Sign in with Fingerprint
+          </Button>
+
+          <p className="text-xs text-center text-muted-foreground pt-2">
             Don't have an account?{' '}
             <Link href="/signup" className="underline font-medium text-primary hover:text-primary/80">
               Sign up
