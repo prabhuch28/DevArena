@@ -1,54 +1,50 @@
-# DevArena
 
-Welcome to **DevArena**, the ultimate platform for developers to sharpen their backend engineering skills in a competitive and interactive environment.
+# 🚀 DevArena: The Ultimate Backend Playground 🚀
 
-## 🚀 Overview
+## 🏆 Hackathon Pitch
+In today's fast-paced tech world, backend engineers lack a space to practice system design and coding in a fun, competitive, and visual way. **DevArena** is our answer. It's an AI-powered, interactive platform where developers can duel, design, and dominate. Think of it as a gym, a dojo, and a creative canvas for backend developers, all rolled into one.
 
-DevArena is a Next.js application designed to help developers practice coding challenges, visualize complex backend systems, and learn with the help of AI-powered tools. Whether you're preparing for an interview or just looking to improve your skills, DevArena provides the tools you need to succeed.
+## 🤯 The Problem
+- **Coding is not just about algorithms**: It's about system design, architecture, and understanding trade-offs.
+- **Learning can be isolating**: Reading docs and watching videos is passive. Developers need to *do*.
+- **Interview prep is a grind**: LeetCode is great, but it doesn't prepare you for system design interviews or real-world architectural thinking.
 
-## ✨ Features
+## ✨ Our Solution: DevArena
+DevArena transforms backend practice from a chore into an engaging experience. We combine competitive coding with a drag-and-drop system design playground and a suite of AI-powered tools to create a holistic learning environment.
 
-- **Coding Challenges**: Solve a variety of algorithmic challenges, from easy to hard, across different categories like Arrays, Stacks, and Dynamic Programming.
-- **Live Duels**: Compete head-to-head against an AI opponent in real-time coding challenges.
-- **Interactive Playground**: A drag-and-drop interface to design and visualize backend architectures and system logic.
-- **Global Leaderboard**: See how you rank against other developers on the platform based on your XP.
-- **Visual Tutorials**: Learn complex backend concepts through interactive tutorials and guides.
-- **AI-Powered Tools**:
-  - **AI Mentor**: Get Socratic hints and conceptual explanations when you're stuck on a problem.
-  - **Code Summarizer**: Get a step-by-step execution summary of your code, inspired by Python Tutor.
-  - **Code Story Generator**: Transform your code into a simple, engaging narrative.
-  - **Code-to-Image**: Generate visual diagrams (like flowcharts or architecture diagrams) from your code snippets.
+### 核心功能 (Core Features)
+
+- **⚔️ Live Duels**: Go head-to-head against an AI opponent in real-time coding challenges. Feel the pressure!
+- **🎨 Interactive Playground**: Design complex backend systems (APIs, databases, caches) with a drag-and-drop interface. Visualize the logic, don't just imagine it.
+- **🏆 Global Leaderboard**: Earn XP for every challenge solved and see how you stack up against the competition.
+- **📚 Visual Tutorials**: Learn complex topics like JWT, caching, and APIs through interactive guides linked to practical challenges.
+
+### 🤖 Our AI Secret Sauce (Powered by Genkit & Gemini)
+
+1.  **🧠 AI Mentor**: Stuck on a problem? Our Socratic AI Mentor won't give you the answer. It'll ask the right questions to guide you to the solution.
+2.  **📜 Code Story Generator**: Transform your complex code into a simple, engaging story. Perfect for understanding the 'why' behind the 'what'.
+3.  **📊 Code Summarizer**: Get a step-by-step execution summary of your code, inspired by the legendary Python Tutor.
+4.  **🖼️ Code-to-Image Visualizer**: Automatically generate a flowchart or architecture diagram from your code snippet. See your logic, visually.
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Next.js](https://nextjs.org/) (with App Router)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **UI**: [React](https://react.dev/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Component Library**: [ShadCN UI](https://ui.shadcn.com/)
-- **Backend & Auth**: [Firebase](https://firebase.google.com/) (Authentication, Firestore)
-- **Generative AI**: [Genkit](https://firebase.google.com/docs/genkit) (with Google's Gemini models)
+- **Framework**: **Next.js 15** (App Router & Turbopack)
+- **UI**: **React** with **TypeScript**
+- **Styling**: **Tailwind CSS**
+- **Components**: **ShadCN UI**
+- **Backend & Auth**: **Firebase** (Authentication & Firestore)
+- **Generative AI**: **Genkit** with Google's **Gemini Models**
 
-## 📦 Getting Started
+## 🏃‍♀️ Running the Project (For Judges & Mentors)
 
-This project is set up to run in Firebase Studio.
+This project is set up to run in a cloud development environment like Firebase Studio.
 
-1.  **Install Dependencies**: The project comes with all dependencies listed in `package.json`. They will be installed automatically.
+1.  **Dependencies**: `npm install` is handled automatically.
+2.  **Run**: The dev server is started with `npm run dev`.
+3.  **View**: Open the provided URL to see DevArena in action!
 
-2.  **Run the Development Server**: To start the development server, use the following command:
-    ```bash
-    npm run dev
-    ```
-
-3.  **Open the App**: Open [http://localhost:3000](http://localhost:3000) (or the port specified in your environment) to view the application in your browser.
-
-## 📁 Project Structure
-
-- **`src/app`**: Contains all the pages and layouts for the Next.js application, following the App Router structure.
-  - **`src/app/(app)`**: Main application routes that require authentication.
-  - **`src/app/login`** & **`src/app/signup`**: Authentication pages.
-- **`src/components`**: Shared React components, including UI components from ShadCN.
-- **`src/ai/flows`**: All Genkit AI flows are defined here. Each file typically represents a specific AI-powered feature.
-- **`src/firebase`**: Firebase configuration, custom hooks (`useUser`, `useCollection`), and providers.
-- **`src/lib`**: Utility functions and static data for the application.
-- **`docs/backend.json`**: A blueprint of the app's data models and Firestore structure.
+## 🔮 Future Vision
+- **Multiplayer Duels**: Compete against other real developers.
+- **Community-Sourced Challenges**: Allow users to create and share their own challenges.
+- **Team-Based Competitions**: Form teams and conquer challenges together.
+- **Deeper AI Integration**: Use AI to generate personalized learning paths and identify knowledge gaps.
